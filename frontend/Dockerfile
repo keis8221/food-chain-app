@@ -7,4 +7,5 @@ RUN npm install && yarn build
 # nginx(product)
 FROM nginx:stable
 WORKDIR /var/www/html
+COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=Builder /svelte_app/public/* ./
