@@ -4,3 +4,7 @@ WORKDIR /svelte_app
 COPY pseudo_app ./
 RUN npm install && yarn build
 
+# nginx(product)
+FROM nginx:stable
+WORKDIR /var/www/html
+COPY --from=Builder /svelte_app/public/* ./
