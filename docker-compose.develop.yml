@@ -1,0 +1,15 @@
+version: '3'
+services:
+  web:
+    build:
+      context: web
+      target: develop
+      dockerfile: Dockerfile.develop
+    ports:
+      - "8080:80"
+
+  backend:
+    ports:
+      - "3000:3000"
+
+
