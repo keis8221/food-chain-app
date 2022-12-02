@@ -5,9 +5,9 @@ services:
       context: web
       target: develop
       dockerfile: Dockerfile.local
-    command: yarn run dev
+    command: yarn run dev --host
     ports:
-      - "8080:80"
+      - "5173:5173"
 
   backend:
     build:
