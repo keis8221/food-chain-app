@@ -9,6 +9,11 @@ services:
       - "8080:80"
 
   backend:
+    build:
+      context: server/app
+      target: develop
+      dockerfile: Dockerfile.local
+
     ports:
       - "3000:3000"
 
