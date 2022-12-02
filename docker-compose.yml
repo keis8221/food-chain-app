@@ -5,3 +5,8 @@ services:
     container_name: baba_frontend
     ports:
       - "8080:80"
+  backend:
+    build: backend/pseudo_app
+    container_name: baba_backend
+    ports:
+      - "3000:3000"
