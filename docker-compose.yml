@@ -1,0 +1,7 @@
+version: '3'
+services:
+  frontend:
+    build: frontend
+    container_name: baba_frontend
+    ports:
+      - "8080:80"
