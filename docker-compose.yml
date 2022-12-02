@@ -1,8 +1,8 @@
 version: '3'
 services:
-  frontend:
-    build: frontend
-    container_name: baba_frontend
+  web:
+    build: web
+    container_name: baba_web
     ports:
       - "8080:80"
   backend:

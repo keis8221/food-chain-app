@@ -1,9 +1,9 @@
 # build svelte app
 FROM node:16.6.1-slim AS Builder
 WORKDIR /svelte_app
-COPY pseudo_app/package.json pseudo_app/yarn.lock ./
+COPY app/package.json app/yarn.lock ./
 RUN yarn install
-COPY pseudo_app ./
+COPY app ./
 RUN yarn build
 
 # nginx(product)
