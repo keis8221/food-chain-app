@@ -1,9 +1,6 @@
 # prepare svelte project
 FROM node:16.6.1-slim AS prepare
 WORKDIR /svelte_app
-COPY app/package.json app/yarn.lock ./
-RUN yarn install
-COPY app ./
 
 # develop container
 ENV LIB="git curl wget"
@@ -14,6 +11,9 @@ RUN apt update \
 # build svelte app
 # require: Dockerfie.prepare
 FROM prepare AS builder
+COPY app/package.json app/yarn.lock ./
+RUN yarn install
+COPY app ./
 RUN yarn build
 
 # nginx(product)

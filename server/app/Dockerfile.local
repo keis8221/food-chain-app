@@ -1,9 +1,6 @@
 # prepare
 FROM node:16.13.1-slim AS prepare
 WORKDIR /server
-COPY package.json yarn.lock ./
-RUN yarn install --prod --frozen-lockfile
-COPY . .
 
 # develop
 ENV LIB="git curl wget"
@@ -13,6 +10,9 @@ RUN apt update \
 
 # build
 FROM prepare AS builder
+COPY package.json yarn.lock ./
+RUN yarn install --prod --frozen-lockfile
+COPY . .
 RUN yarn build
 
 # server
