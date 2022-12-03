@@ -18,6 +18,8 @@ services:
     networks:
       - web
       - server
+    depends_on:
+      - database
 
   database:
     image: postgres:15.1-alpine
