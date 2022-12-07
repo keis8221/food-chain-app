@@ -1,4 +1,4 @@
-import { Shop } from 'src/shop/entities/shop.entity';
+import { User } from 'src/user/entities/user.entity';
 import {
   BaseEntity,
   Column,
@@ -6,20 +6,36 @@ import {
   DeleteDateColumn,
   Entity,
   JoinColumn,
-  ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { User } from './user.entity';
+
+const ROLE = {
+  SUPER: 'super',
+  ADMIN: 'admin',
+  MEMBER: 'member',
+};
 
 @Entity()
-export class Staff extends BaseEntity {
+export class Account extends BaseEntity {
   @PrimaryGeneratedColumn({ type: 'bigint' })
-  readonly id: number;
+  id: number;
 
   @Column({ default: null })
   hashId: string;
+
+  @Column({ default: null })
+  username: string;
+
+  @Column({ default: null })
+  email: string;
+
+  @Column({ default: null })
+  password: string;
+
+  @Column({ type: 'varchar', default: null })
+  role: typeof ROLE[keyof typeof ROLE];
 
   @CreateDateColumn()
   readonly createdAt?: Date;
@@ -30,10 +46,7 @@ export class Staff extends BaseEntity {
   @DeleteDateColumn()
   readonly deletedAt?: Date;
 
-  @OneToOne(() => User, (user) => user.staff)
+  @OneToOne(() => User, (user) => user.account)
   @JoinColumn()
   user: User;
-
-  @ManyToOne(() => Shop, (shop) => shop.staffs)
-  shop: Shop;
 }

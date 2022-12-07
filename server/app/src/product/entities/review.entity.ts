@@ -1,4 +1,4 @@
-import { Shop } from 'src/shop/entities/shop.entity';
+import { User } from 'src/user/entities/user.entity';
 import {
   BaseEntity,
   Column,
@@ -7,19 +7,24 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
-  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { User } from './user.entity';
+import { Product } from './product.entity';
 
 @Entity()
-export class Staff extends BaseEntity {
+export class Review extends BaseEntity {
   @PrimaryGeneratedColumn({ type: 'bigint' })
-  readonly id: number;
+  id: number;
 
   @Column({ default: null })
   hashId: string;
+
+  @Column({ default: null })
+  content: string;
+
+  @Column({ default: null })
+  image: string;
 
   @CreateDateColumn()
   readonly createdAt?: Date;
@@ -30,10 +35,11 @@ export class Staff extends BaseEntity {
   @DeleteDateColumn()
   readonly deletedAt?: Date;
 
-  @OneToOne(() => User, (user) => user.staff)
+  @ManyToOne(() => User, (user) => user.reviews)
   @JoinColumn()
   user: User;
 
-  @ManyToOne(() => Shop, (shop) => shop.staffs)
-  shop: Shop;
+  @ManyToOne(() => Product, (product) => product.reviews)
+  @JoinColumn()
+  product: Product;
 }
