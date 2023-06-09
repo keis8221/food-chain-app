@@ -2,8 +2,7 @@
   import { createField, createForm } from "felte";
   import { goto } from "@roxi/routify";
   import Textfield from "@smui/textfield";
-  import { z } from "zod";
-  import type { TProductForm } from "../../../models/Product";
+    import type { TProductForm } from "../../../models/Product";
   import Button from "@smui/button";
   import TextField from "../../../components/cusstomized/TextField.svelte";
   import NumberField from "../../../components/cusstomized/NumberField.svelte";
@@ -14,30 +13,26 @@
 
   export let onConfirm: (values: Required<TProductForm>) => unknown;
 
-  let loading = false;
-  const productSchema = z.object({
-    name: z.string(),
-    description: z.string().optional(),
-    image: z.string().optional(),
-    saleStartDate: z.string(),
-    unitWeight: z.number(),
-    price: z.number(),
-    totalAmount: z.number(),
-  });
-
   const initialValues = {
     name: "",
     description: "",
     saleStartDate: "",
     unitWeight: 0,
     price: 0,
-    totalAmount: undefined,
+    totalAmount: 0,
     image: "",
   };
 
   const { form, data } = createForm({
     initialValues,
-    onSubmit: (values) => {},
+    onSubmit: async (values) => {
+      await onConfirm({
+        ...values,
+        unitWeight: Number($data.unitWeight),
+        price: Number($data.price),
+        totalAmount: Number($data.totalAmount),
+      });
+    },
   });
 
   // data URLに変換された画像を$data内に保持するためのもの
@@ -46,16 +41,11 @@
   async function onImgSelect(event: Event) {
     if (event.target instanceof HTMLInputElement) {
       const files = event.target.files;
-
-      loading = true;
-
       try {
         onInput(await encodeFileToBase64(files[0]));
         onBlur();
       } catch {
         throw new ShowableError("画像の読み込みに失敗しました。");
-      } finally {
-        loading = false;
       }
     }
   }
@@ -65,18 +55,12 @@
     onBlur();
   }
 
-  async function onSubmit() {
-    await onConfirm({
-      ...$data,
-    });
-  }
   let name = "";
   let description = "";
   let startSaleDate = "";
   let unitWeight = 0;
   let price = 0;
-  let totalAmount = null;
-  let image = "";
+  let totalAmount = 0;
 </script>
 
 <div>
@@ -192,7 +176,6 @@
         class="px-7 py-2"
         color="secondary"
         type="submit"
-        on:click={onSubmit}
       >
         <p class="font-bold text-lg">出品する</p>
       </Button>
