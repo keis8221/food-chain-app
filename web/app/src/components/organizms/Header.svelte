@@ -3,14 +3,14 @@
   import IconButton from "@smui/icon-button";
   import { isLogined } from "../../stores/Login";
 
-  export let toggle: Function;
+  export let toggle: () => void;
 </script>
 
 <TopAppBar variant="short">
   <Row>
     <Section>
       {#if $isLogined}
-        <IconButton class="material-icons" on:click={toggle()}>menu</IconButton>
+        <IconButton class="material-icons" on:click={toggle}>menu</IconButton>
       {/if}
       <Title>BaBaCafeアプリ</Title>
     </Section>

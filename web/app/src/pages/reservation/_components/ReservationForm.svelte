@@ -23,7 +23,6 @@
   let selectedProduct: TProduct;
   onMount(async () => {
     try {
-      console.log("try");
       [selectedProduct, shops] = await Promise.all([
         new ProductRepository().findOne($params.productId),
         new ShopRepository().getShops(),

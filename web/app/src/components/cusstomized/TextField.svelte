@@ -5,8 +5,8 @@
 
   export let name: string;
   export let helperText: string;
-  export let label: string = "";
-  export let textValue: string = "";
+  export let label = "";
+  export let textValue = "";
 
   const { field, onInput, onBlur } = createField(name);
 

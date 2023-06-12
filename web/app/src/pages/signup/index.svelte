@@ -10,9 +10,9 @@
   import { isLogined } from "../../stores/Login";
   import { AccountService } from "../../services/AccountService";
 
-  let email: string = "";
-  let password: string = "";
-  let password_confirm: string = "";
+  let email = "";
+  let password = "";
+  let password_confirm = "";
 
   const USER_CLASSIFICATION = {
     individual: "individual",
@@ -42,10 +42,10 @@
   let attribute: typeof USER_ATTRIBUTE[keyof typeof USER_ATTRIBUTE] =
     USER_ATTRIBUTE.consumer;
 
-  let name: string = "";
-  let tel: string = "";
-  let zipCode: string = "";
-  let address: string = "";
+  let name = "";
+  let tel = "";
+  let zipCode = "";
+  let address = "";
 
   async function signup() {
     if (password !== password_confirm) {
