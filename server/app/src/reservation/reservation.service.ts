@@ -31,14 +31,12 @@ export class ReservationService {
     @InjectRepository(Account)
     private accountRepository: Repository<Account>,
     @InjectDataSource() private dataSource: DataSource,
-  ) { }
+  ) {}
 
-  async getReservationProducts(
-    id: string,
-  ): Promise<TReservationProduct[]> {
+  async getReservationProducts(id: string): Promise<TReservationProduct[]> {
     let where: FindOptionsWhere<ReservationProducts> = {};
     const account = await this.accountRepository.findOne({
-      where: { id }
+      where: { id },
     });
 
     if (account.attribute === 'producer') {
@@ -95,7 +93,7 @@ export class ReservationService {
 
     const reservation = new Reservation();
     const shop = await this.shopRepository.findOne({
-      where: { hashId: dto.shopId },
+      where: { id: dto.shopId },
     });
     this.setReservationAttributes(dto, reservation, shop, account);
 

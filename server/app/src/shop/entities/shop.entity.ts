@@ -1,7 +1,7 @@
-import { BaseEntityAddHashId } from 'src/common/base-entity-add-hash-id';
 import { LineProvider } from 'src/line/entities/line-provider.entity';
 import { Reservation } from 'src/reservation/entities/reservation.entity';
 import {
+  BaseEntity,
   Column,
   CreateDateColumn,
   DeleteDateColumn,
@@ -13,36 +13,62 @@ import {
 } from 'typeorm';
 
 @Entity()
-export class Shop extends BaseEntityAddHashId {
-  @PrimaryGeneratedColumn({ type: 'bigint' })
-  id: number;
+export class Shop extends BaseEntity {
+  @PrimaryGeneratedColumn('uuid', { comment: '店舗ID' })
+  readonly id!: string;
 
-  @Column({ default: null })
-  name: string;
+  @Column({ comment: '店舗名', type: 'varchar', length: 30 })
+  name!: string;
 
-  @Column({ default: null })
-  email: string;
+  @Column({ comment: 'メールアドレス', type: 'varchar', length: 50 })
+  email!: string;
 
-  @Column({ default: null })
-  tel: string;
+  @Column({ comment: '電話番号', type: 'varchar', length: 14 })
+  tel!: string;
 
-  @Column({ default: null })
-  zipCode: string;
+  @Column({ comment: '郵便番号', type: 'varchar', name: 'zip_code', length: 8 })
+  zipCode!: string;
 
-  @Column({ default: null })
-  address: string;
+  @Column({ comment: '住所', type: 'varchar', length: 100 })
+  address!: string;
 
-  @Column({ default: null })
-  address2: string;
+  @Column({ comment: '説明', type: 'text', default: '' })
+  description?: string;
 
-  @Column({ default: null })
-  description: string;
+  @CreateDateColumn({
+    comment: '開店時間',
+    type: 'timestamptz',
+    name: 'opened_at',
+  })
+  openedAt!: Date;
 
-  @Column({ default: null })
-  openedAt: Date;
+  @CreateDateColumn({
+    comment: '閉店時間',
+    type: 'timestamptz',
+    name: 'closed_at',
+  })
+  closedAt!: Date;
 
-  @Column({ default: null })
-  closedAt: Date;
+  @CreateDateColumn({
+    comment: '作成日時',
+    type: 'timestamptz',
+    name: 'created_at',
+  })
+  readonly createdAt?: Date;
+
+  @UpdateDateColumn({
+    comment: '更新日時',
+    type: 'timestamptz',
+    name: 'updated_at',
+  })
+  readonly updatedAt?: Date;
+
+  @DeleteDateColumn({
+    comment: '削除日時',
+    type: 'timestamptz',
+    name: 'deleted_at',
+  })
+  readonly deletedAt?: Date;
 
   @OneToOne(() => LineProvider, (lineProvider) => lineProvider.shop)
   lineProvider: LineProvider;
@@ -50,19 +76,9 @@ export class Shop extends BaseEntityAddHashId {
   @OneToMany(() => Reservation, (reservation) => reservation.shop)
   reservations: Reservation[];
 
-  @CreateDateColumn()
-  readonly createdAt?: Date;
-
-  @UpdateDateColumn()
-  readonly updatedAt?: Date;
-
-  @DeleteDateColumn()
-  readonly deletedAt?: Date;
-
   convertTShop() {
     return {
       ...this,
-      id: this.hashId,
       reservations: this.reservations.map(
         (reservation) => reservation.convertTReservation() || [],
       ),
@@ -77,7 +93,6 @@ export type TShop = Pick<
   | 'tel'
   | 'zipCode'
   | 'address'
-  | 'address2'
   | 'description'
   | 'openedAt'
   | 'closedAt'

@@ -4,28 +4,26 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
-  Timestamp,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
-  OneToMany
+  OneToMany,
 } from 'typeorm';
 import { Product } from 'src/product/entities/product.entity';
 import { Reservation } from 'src/reservation/entities/reservation.entity';
 
 export const USER_CLASSIFICATION = {
-  individual: "individual",
-  corporate: "corporate",
+  individual: 'individual',
+  corporate: 'corporate',
 } as const;
 
 export const USER_ATTRIBUTE = {
-  producer: "producer",
-  consumer: "consumer",
-  logistics: "logistics",
+  producer: 'producer',
+  consumer: 'consumer',
+  logistics: 'logistics',
 } as const;
 
 @Entity()
 export class Account extends BaseEntity {
-
   @PrimaryGeneratedColumn('uuid', { comment: 'ユーザーID' })
   readonly id!: string;
 
@@ -53,14 +51,26 @@ export class Account extends BaseEntity {
   @Column({ comment: '住所', type: 'varchar', length: 100 })
   address!: string;
 
-  @CreateDateColumn({ comment: '作成日時', name: 'created_at' })
-  readonly createdAt?: Timestamp;
+  @CreateDateColumn({
+    comment: '作成日時',
+    type: 'timestamptz',
+    name: 'created_at',
+  })
+  readonly createdAt?: Date;
 
-  @UpdateDateColumn({ comment: '更新日時', name: 'updated_at' })
-  readonly updatedAt?: Timestamp;
+  @UpdateDateColumn({
+    comment: '更新日時',
+    type: 'timestamptz',
+    name: 'updated_at',
+  })
+  readonly updatedAt?: Date;
 
-  @DeleteDateColumn({ comment: '削除日時', name: 'deleted_at' })
-  readonly deletedAt?: Timestamp;
+  @DeleteDateColumn({
+    comment: '削除日時',
+    type: 'timestamptz',
+    name: 'deleted_at',
+  })
+  readonly deletedAt?: Date;
 
   @OneToMany(() => Product, (product) => product.producer)
   products: Product[];
