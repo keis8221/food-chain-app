@@ -6,7 +6,7 @@
   import { addToast } from "../../stores/Toast";
 
   export let isOpen: boolean;
-  export let close: Function;
+  export let close: () => void;
 
   const DEFAULT_ACTIVE = "reservation";
 
