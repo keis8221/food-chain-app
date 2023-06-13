@@ -5,8 +5,6 @@ import {
   IsInt,
   IsEnum,
   IsDateString,
-  IsByteLength,
-  IsUUID,
 } from 'class-validator';
 import { CROP_KINDS, CROP_UNITS } from '../entities/product.entity';
 
