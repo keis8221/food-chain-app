@@ -6,7 +6,7 @@
   import Button from "@smui/button";
   import { addToast } from "../../../stores/Toast";
   import { markAsLogoutState } from "../../../stores/Login";
-  import { CROP_UNITS_LABEL } from "../../../constants/product"
+  import { CROP_UNITS_LABEL } from "../../../constants/product";
 
   async function fetchProduct(): Promise<TProduct> {
     try {

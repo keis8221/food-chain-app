@@ -6,7 +6,7 @@
   import CircularProgress from "@smui/circular-progress";
   import { addToast } from "../../stores/Toast";
   import { markAsLogoutState } from "../../stores/Login";
-  import { CROP_UNITS_LABEL } from "../../constants/product"
+  import { CROP_UNITS_LABEL } from "../../constants/product";
 
   $: productRepository = new ProductRepository();
 

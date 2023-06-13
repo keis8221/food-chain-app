@@ -15,7 +15,7 @@
   import dayjs from "dayjs";
   import { ShopRepository, type TShop } from "../../../models/Shop";
   import { markAsLogoutState } from "../../../stores/Login";
-  import { CROP_UNITS_LABEL } from "../../../constants/product"
+  import { CROP_UNITS_LABEL } from "../../../constants/product";
 
   export let onConfirm: (values: Required<TReservationForm>) => unknown;
 

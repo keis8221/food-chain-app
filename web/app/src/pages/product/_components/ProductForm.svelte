@@ -9,7 +9,7 @@
   import { encodeFileToBase64 } from "../../../utils/file";
   import IconButton from "@smui/icon-button";
   import CloseIcon from "../../../components/icon/CloseIcon.svelte";
-  import {CROP_KINDS, CROP_KINDS_LABEL, CROP_UNITS, CROP_UNITS_LABEL} from "../../../constants/product"
+  import {CROP_KINDS, CROP_KINDS_LABEL, CROP_UNITS, CROP_UNITS_LABEL} from "../../../constants/product";
   import { addToast } from "../../../stores/Toast";
 
   const START_DEFAULT_DATE_TIME = new Date();
