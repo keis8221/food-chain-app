@@ -6,6 +6,7 @@
   import Button from "@smui/button";
   import { addToast } from "../../../stores/Toast";
   import { markAsLogoutState } from "../../../stores/Login";
+  import { CROP_UNITS_LABEL } from "../../../constants/product"
 
   async function fetchProduct(): Promise<TProduct> {
     try {
@@ -68,7 +69,7 @@
         {/if}
         <div class="ml-4 mt-5">
           <p class="text-[#8A8A8A] mb-1">
-            {product.producer.address + product.producer.address2}
+            {product.producer.address}
           </p>
           <div class="text-3xl text-[#8A8A8A]">
             {product.producer.name}
@@ -83,14 +84,14 @@
       >
         <div class="">
           <div>
-            残りあと{product.totalAmount}点
+            残りあと{product.remaining}点
           </div>
           <div class="text-lg">
             {product.name}
           </div>
         </div>
         <div class="text-2xl text-[#5A5A5A] mt-4">
-          {product.unitWeight}gあたり{product.price}円（税込）
+          {product.unitQuantity}{CROP_UNITS_LABEL[product.unit]}あたり{product.unitPrice}円（税込）
         </div>
       </Paper>
 

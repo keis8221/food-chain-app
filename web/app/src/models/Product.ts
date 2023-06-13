@@ -6,13 +6,6 @@ import { baseAPI } from "../api/base";
 export type TProduct = Jsonify<BaseTProduct>;
 export type TProductForm = Jsonify<CreateProductDto>;
 
-export const PRODUCT_STATUS = {
-  ON_SALE: "onSale", // 販売中
-  SOLD_OUT: "soldOut", // 売り切れ
-  WILL_SALE: "willSale", // 販売予定
-  SALE_OUT: "saleOut", // 販売終了
-};
-
 export class ProductRepository {
   get baseEndpoint(): string {
     return "products";

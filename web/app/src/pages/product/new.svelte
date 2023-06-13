@@ -38,10 +38,6 @@
   }
 </script>
 
-<div class="m-6">
-  <h2 class="text-2xl font-bold">新規出品</h2>
-
-  <div class="px-[10rem] mt-[2rem]">
-    <ProductForm {onConfirm} />
-  </div>
+<div>
+  <ProductForm {onConfirm} />
 </div>

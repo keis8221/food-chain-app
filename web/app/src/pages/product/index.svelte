@@ -6,6 +6,7 @@
   import CircularProgress from "@smui/circular-progress";
   import { addToast } from "../../stores/Toast";
   import { markAsLogoutState } from "../../stores/Login";
+  import { CROP_UNITS_LABEL } from "../../constants/product"
 
   $: productRepository = new ProductRepository();
 
@@ -99,12 +100,12 @@
                 </div>
                 <div class="price-block">
                   <div class="text-lg text-[#4A4A4A] mt-1">
-                    {product.unitWeight}gあたり
+                    {product.unitQuantity}{CROP_UNITS_LABEL[product.unit]}あたり
                   </div>
                   <div class="text-2xl text-[#4A4A4A]">
-                    {product.price}
+                    {product.unitPrice}
                   </div>
-                  <div class="text-[#4A4A4A] mt-1.5">円 ~</div>
+                  <div class="text-[#4A4A4A] mt-1.5">円</div>
                 </div>
               </Content>
             </PrimaryAction>
