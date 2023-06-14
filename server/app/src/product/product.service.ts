@@ -2,9 +2,8 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateProductDto } from './dto/create-product.dto';
-import { Product, PRODUCT_STATUS, TProduct } from './entities/product.entity';
+import { Product, TProduct } from './entities/product.entity';
 import * as dayjs from 'dayjs';
-import { putBase64Image } from 'src/utils/file';
 import { Account, USER_ATTRIBUTE } from 'src/account/entities/account.entity';
 
 @Injectable()
@@ -14,7 +13,7 @@ export class ProductService {
     private productRepository: Repository<Product>,
     @InjectRepository(Account)
     private accountRepository: Repository<Account>,
-  ) { }
+  ) {}
 
   async getProducts(): Promise<TProduct[]> {
     return await this.productRepository
@@ -24,7 +23,7 @@ export class ProductService {
 
   async getProduct(id: string): Promise<TProduct> {
     return await this.productRepository
-      .findOne({ where: { hashId: id }, relations: { producer: true } })
+      .findOne({ where: { id }, relations: { producer: true } })
       .then((product) => product.convertTProduct());
   }
 
@@ -38,9 +37,7 @@ export class ProductService {
       where: { id: account.id },
     });
     if (account.attribute === USER_ATTRIBUTE.producer) {
-      producer = await this.accountRepository.findOne({
-        where: { id: account?.id },
-      });
+      producer = account;
     } else {
       // 農家以外の場合はエラーを表示。
       throw new BadRequestException();
@@ -56,41 +53,22 @@ export class ProductService {
     product: Product,
     producer: Account,
   ) {
+    product.producerId = producer.id;
     product.name = dto.name;
+    product.kinds = dto.kinds;
     product.description = dto.description;
-    product.price = dto.price;
-    product.unitWeight = dto.unitWeight;
-    product.totalAmount = dto.totalAmount;
-    if (dto.saleStartDate) {
-      product.saleStartDate = dayjs(dto.saleStartDate).toDate();
-
-      const todaysDate = dayjs().toDate();
-      // 当日時が商品販売開始日時よりも前の場合は「販売予定」とする。
-      // それ以外は「販売中」とする。
-      if (todaysDate < product.saleStartDate) {
-        product.status = PRODUCT_STATUS.WILL_SALE;
-      } else {
-        product.status = PRODUCT_STATUS.ON_SALE;
-      }
+    if (dto.startAt) {
+      product.startAt = dayjs(dto.startAt).toDate();
     }
-
-    product.producer = producer;
+    if (dto.endAt) {
+      product.endAt = dayjs(dto.endAt).toDate();
+    }
+    product.unit = dto.unit;
+    product.unitQuantity = dto.unitQuantity;
+    product.unitPrice = dto.unitPrice;
+    product.image = dto.image || null;
+    product.quantity = dto.quantity;
+    product.remaining = dto.quantity;
     await product.save();
-
-    await this.afterSaveProduct(product, dto);
-  }
-
-  private static async afterSaveProduct(
-    product: Product,
-    dto: CreateProductDto,
-  ) {
-    // imageの値がbase64である(httpから始まらない)なら，ストレージに保存する処理を行う
-    if (dto.image && !dto.image.startsWith('http')) {
-      product.image = await putBase64Image(
-        `product/${product.hashId}`,
-        dto.image,
-      );
-      await product.save();
-    }
   }
 }

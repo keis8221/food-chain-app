@@ -95,7 +95,7 @@ export class ReservationProducts extends BaseEntityAddHashId {
   reservationId: number;
 
   @PrimaryColumn()
-  productId: number;
+  productId: string;
 
   @Column({ comment: '購入する商品数' })
   quantity: number;

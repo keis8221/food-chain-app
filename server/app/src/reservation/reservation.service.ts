@@ -131,9 +131,9 @@ export class ReservationService {
     await Promise.all(
       dto.products.map(async (dtoProduct) => {
         const product = await this.productRepository.findOne({
-          where: { hashId: dtoProduct.productId },
+          where: { id: dtoProduct.productId },
         });
-        product.totalAmount -= dtoProduct.quantity;
+        product.remaining -= dtoProduct.quantity;
         await txManager.save(product);
 
         const reservationProducts = new ReservationProducts();

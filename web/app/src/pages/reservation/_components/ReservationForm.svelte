@@ -15,6 +15,7 @@
   import dayjs from "dayjs";
   import { ShopRepository, type TShop } from "../../../models/Shop";
   import { markAsLogoutState } from "../../../stores/Login";
+  import { CROP_UNITS_LABEL } from "../../../constants/product";
 
   export let onConfirm: (values: Required<TReservationForm>) => unknown;
 
@@ -29,7 +30,7 @@
       ]);
       shopIds = Object.fromEntries(shops.map(({ id, name }) => [id, name]));
 
-      totalPrice = selectedProduct.price;
+      totalPrice = selectedProduct.unitPrice;
     } catch (err) {
       switch (err.error || err.message) {
         case "Unauthorized":
@@ -59,7 +60,7 @@
   let totalPrice = 0;
 
   const initialValues = {
-    totalPrice: selectedProduct?.price,
+    totalPrice: selectedProduct?.unitPrice,
     status: RESERVATION_STATUS.UNDESPATCHED,
     shippingDate: "",
     shopId: "",
@@ -85,14 +86,14 @@
   });
 
   function calcTotalPrice() {
-    $data.totalPrice = $data.quantity * selectedProduct.price;
+    $data.totalPrice = $data.quantity * selectedProduct.unitPrice;
   }
 </script>
 
 {#if selectedProduct}
   <div>
     <div class="mb-8">
-      <p class="flex justify-end">本日あと{selectedProduct.totalAmount}点</p>
+      <p class="flex justify-end">本日あと{selectedProduct.remaining}点</p>
       <img
         src={selectedProduct.image ??
           "https://girlydrop.com/wp-content/uploads/post/p5774.jpg"}
@@ -102,14 +103,14 @@
         {selectedProduct.name}
       </div>
       <div class="text-2xl text-[#5A5A5A] mt-2">
-        {selectedProduct.unitWeight}gあたり{selectedProduct.price}円（税込）
+        {selectedProduct.unitQuantity}{CROP_UNITS_LABEL[selectedProduct.unit]}あたり{selectedProduct.unitPrice}円（税込）
       </div>
     </div>
 
     <form use:form>
       <NumberField
         name="quantity"
-        label="数量"
+        label="予約数量"
         textValue={quantity}
         helperText="例）3"
         onChange={() => calcTotalPrice()}
@@ -137,7 +138,7 @@
       {/if}
 
       <div class="text-2xl text-[#5A5A5A] flex justify-end mt-8">
-        合計金額：{$data.totalPrice ?? selectedProduct.price}円（税込）
+        合計金額：{$data.totalPrice ?? selectedProduct.unitPrice}円（税込）
       </div>
 
       <div class="ml-[17%] flex mt-8">
