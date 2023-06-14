@@ -58,6 +58,32 @@
       {#each products as product}
         <div class="card-container">
           <Card class="rounded-[24px]">
+            <Content class="mdc-typography--body2 relative">
+              <div class="">
+                {#if product.producer.image}
+                  <img
+                    class="absolute top-[-12%] w-[40px] h-[40px] rounded-[50%]"
+                    src={product.producer.image}
+                    alt=""
+                  />
+                {:else}
+                  <img
+                    class="absolute top-[-12%] w-[40px] h-[40px] rounded-[50%]"
+                    src="./../../../public/images/farmer.png"
+                    alt=""
+                  />
+                {/if}
+                <div
+                  class="absolute text-sm top-0 left-[60px] text-[#4A4A4A]"
+                >
+                  {product.producer.name}
+
+                </div>
+                <div class="text-xl font-bold mt-4">
+                  {product.name}
+                </div>
+              </div>
+            </Content>
             <PrimaryAction on:click={$goto(`./${product.id}`)}>
               <div>
                 <img
@@ -71,32 +97,6 @@
                 </MediaContent>
               </div>
               <Content class="mdc-typography--body2 relative">
-                <div class="">
-                  {#if product.producer.image}
-                    <img
-                      class="absolute top-[-12%] w-[40px] h-[40px] rounded-[50%]"
-                      src={product.producer.image}
-                      alt=""
-                    />
-                  {:else}
-                    <img
-                      class="absolute top-[-12%] w-[40px] h-[40px] rounded-[50%]"
-                      src="./../../../public/images/farmer.png"
-                      alt=""
-                    />
-                  {/if}
-                  <div
-                    class="absolute text-sm top-0 left-[60px] text-[#4A4A4A]"
-                  >
-                    {product.producer.name}
-                  </div>
-                </div>
-                <div class="text-xl font-bold mt-4">
-                  {product.name}
-                </div>
-                <div class="text-sm text-[#4A4A4A] mt-2">
-                  {product.producer.address}
-                </div>
                 <div class="price-block">
                   <div class="text-lg text-[#4A4A4A] mt-1">
                     {product.unitQuantity}{CROP_UNITS_LABEL[product.unit]}あたり
