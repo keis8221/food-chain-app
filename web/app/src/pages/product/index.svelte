@@ -43,15 +43,14 @@
   </div>
 {:then products}
   <div class="m-6">
-    <div class="flex justify-between">
-      <h1 class="text-2xl font-bold">出品一覧</h1>
+    <div class="flex justify-between"style="display: flex; justify-content: center">
       <Button
         color="secondary"
         variant="raised"
         class="px-5 h-10"
         on:click={() => $goto("./new")}
       >
-        <p class="font-bold text-lg">新規出品</p>
+        <p class="font-bold text-lg">出品</p>
       </Button>
     </div>
 
