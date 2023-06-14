@@ -47,10 +47,10 @@
       <Button
         color="secondary"
         variant="raised"
-        class="px-5 h-10"
+        class="px-20 h-16"
         on:click={() => $goto("./new")}
       >
-        <p class="font-bold text-lg">出品</p>
+        <p class="font-bold text-3xl">出品</p>
       </Button>
     </div>
 
