@@ -114,11 +114,11 @@
         src={selectedProduct.image ??
           "https://girlydrop.com/wp-content/uploads/post/p5774.jpg"}
         alt=""
-        width="400"
+        width="300"
         class="mt-3"
       />
       <Paper
-        class="mt-3 w-[400px]"
+        class="mt-3 w-[300px]"
         color="secondary"
         variant="outlined">
         <div class="text-center text-base text-[#5A5A5A] mt-2">
