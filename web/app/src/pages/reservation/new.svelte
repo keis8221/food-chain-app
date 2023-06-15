@@ -41,10 +41,6 @@
   }
 </script>
 
-<div class="m-6">
-  <h2 class="text-2xl font-bold">予約手続き</h2>
-
-  <div class="px-[10rem] mt-[2rem]">
-    <ReservationForm {onConfirm} />
-  </div>
+<div>
+  <ReservationForm {onConfirm} />
 </div>

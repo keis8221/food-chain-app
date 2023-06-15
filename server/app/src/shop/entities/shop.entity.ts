@@ -79,7 +79,7 @@ export class Shop extends BaseEntity {
   convertTShop() {
     return {
       ...this,
-      reservations: this.reservations.map(
+      reservations: this.reservations?.map(
         (reservation) => reservation.convertTReservation() || [],
       ),
     };

@@ -12,7 +12,7 @@ export class ShopService {
 
   async getShops(): Promise<TShop[]> {
     return await this.shopRepository
-      .find({ relations: { reservations: true } })
+      .find({ relations: { reservations: false } })
       .then((shops) => shops.map((shop) => shop.convertTShop()));
   }
 }

@@ -1,7 +1,11 @@
-import { Injectable, ConflictException, InternalServerErrorException } from '@nestjs/common';
+import {
+  Injectable,
+  ConflictException,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, IsNull } from 'typeorm';
-import * as bcrypt from 'bcrypt'
+import * as bcrypt from 'bcrypt';
 import { Account } from './entities/account.entity';
 import { CreateAccountDto } from './dto/create-account.dto';
 
@@ -9,11 +13,11 @@ import { CreateAccountDto } from './dto/create-account.dto';
 export class AccountService {
   constructor(
     @InjectRepository(Account)
-    private accountReporitory: Repository<Account>,
-  ) { }
+    private accountRepository: Repository<Account>,
+  ) {}
 
   async getAccountByEmail(email: string): Promise<Account | undefined> {
-    return await this.accountReporitory.findOne({
+    return await this.accountRepository.findOne({
       where: { email, deletedAt: IsNull() },
     });
   }
@@ -23,14 +27,13 @@ export class AccountService {
       throw new ConflictException();
     }
     try {
-      const salt = await bcrypt.genSalt()
-      const hashPassword = await bcrypt.hash(createAccountDto.password, salt)
+      const salt = await bcrypt.genSalt();
+      const hashPassword = await bcrypt.hash(createAccountDto.password, salt);
       createAccountDto.password = hashPassword;
-      this.accountReporitory.save(createAccountDto);
+      this.accountRepository.save(createAccountDto);
     } catch (e) {
       throw new InternalServerErrorException(e);
     }
     return;
   }
-
 }

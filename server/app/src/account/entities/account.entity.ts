@@ -75,6 +75,6 @@ export class Account extends BaseEntity {
   @OneToMany(() => Product, (product) => product.producer)
   products: Product[];
 
-  @OneToMany(() => Reservation, (reservation) => reservation.user)
+  @OneToMany(() => Reservation, (reservation) => reservation.consumer)
   reservations: Reservation[];
 }
