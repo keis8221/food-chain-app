@@ -1,24 +1,19 @@
-import { IsArray, IsNumber, IsString } from 'class-validator';
+import { IsNotEmpty, IsInt, IsDateString, IsUUID } from 'class-validator';
 
 export class CreateReservationDto {
-  @IsString()
-  shippingDate: string;
+  @IsNotEmpty()
+  @IsUUID()
+  productId: string;
 
-  @IsNumber()
-  totalPrice: number;
+  @IsNotEmpty()
+  @IsInt()
+  quantity: number;
 
-  @IsString()
-  status: string;
+  @IsNotEmpty()
+  @IsDateString()
+  desiredAt: string;
 
-  @IsString()
-  reservationDate: string;
-
-  @IsArray()
-  products: {
-    productId: string;
-    quantity: number;
-  }[];
-
-  @IsString()
-  shopId: string;
+  @IsNotEmpty()
+  @IsUUID()
+  receiveLocationId: string;
 }
