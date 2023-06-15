@@ -8,7 +8,7 @@ module.exports = {
   noHashScroll: false,
   distDir: "dist",
   hashScroll: true,
-  childProcess: "dev:vite",
+  childProcess: "dev:vite-docker",
   extensions: ["html", "svelte", "md", "svx"],
-  started: "2022-12-11T04:32:09.225Z",
+  started: "2023-06-14T06:39:46.402Z",
 };

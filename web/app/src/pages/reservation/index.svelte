@@ -5,6 +5,7 @@
     statusToText,
     type TReservationProduct,
   } from "../../models/Reservation";
+  import { goto } from "@roxi/routify";
   import { addToast } from "../../stores/Toast";
   import CircularProgress from "@smui/circular-progress";
   import dayjs from "dayjs";
@@ -32,10 +33,10 @@
     }
   }
 
-  function showDetail(reservationProduct: TReservationProduct) {
-    dialogData = reservationProduct;
-    open = true;
-  }
+  // function showDetail(reservationProduct: TReservationProduct) {
+  //   dialogData = reservationProduct;
+  //   open = true;
+  // }
 
   onMount(async () => {
     currentAccount = await new AuthService().getProfile();
@@ -63,7 +64,8 @@
       </Head>
       {#each items as item (item.id)}
         <Body class="cell">
-          <Row on:click={() => showDetail(item)}>
+          <Row on:click={ $goto(`./${item.id}`)}>
+          <!-- () => showDetail(item) -->
             <Cell>{item.reservation.user?.name}</Cell>
             <Cell
               >{dayjs(item.reservation.shippingDate).format("YYYY-MM-DD")}</Cell

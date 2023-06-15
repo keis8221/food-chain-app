@@ -19,12 +19,15 @@ import {
   TReservation,
   TReservationProduct,
 } from './entities/reservation.entity';
+import { Producer } from 'src/user/entities/producer.entity';
 
 @Injectable()
 export class ReservationService {
   constructor(
     @InjectRepository(Product)
     private productRepository: Repository<Product>,
+    @InjectRepository(Producer)
+    private producerRepository: Repository<Producer>,
     @InjectRepository(ReservationProducts)
     private reservationProductRepository: Repository<ReservationProducts>,
     @InjectRepository(Shop)
@@ -80,7 +83,7 @@ export class ReservationService {
     return await this.reservationProductRepository
       .findOne({
         where: { id },
-        relations: { reservation: { shop: true }, product: true },
+        relations: { reservation: { shop: true, user: true }, product: true },
       })
       .then((reservationProduct) =>
         reservationProduct.convertTReservationProduct(),

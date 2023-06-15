@@ -28,10 +28,17 @@
         $goto("/reservation");
       }
     } catch (err) {
+      // log
+      console.log(err)
+      console.log(hasPasswordFailedError)
+      //
       switch (err.message) {
         case "ユーザーが見つかりませんでした。":
           return (hasEmailNotFoundError = true);
         case "パスワードが違います。":
+          // log
+          console.log("PasswordFailed")
+          //
           return (hasPasswordFailedError = true);
         default:
           return addToast({

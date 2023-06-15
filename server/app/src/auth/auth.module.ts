@@ -22,7 +22,7 @@ import { LocalStrategy } from './local.strategy';
             // 有効期間を設定
             // 指定する値は以下を参照
             // https://github.com/vercel/ms
-            expiresIn: '1200s',
+            expiresIn: '1200000s',
           },
         };
       },

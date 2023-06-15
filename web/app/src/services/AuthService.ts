@@ -16,6 +16,8 @@ export class AuthService {
         },
       });
     } catch (err) {
+      // log
+      //
       switch (err.code) {
         case "UserNotFoundException":
           throw new ShowableError("ユーザーが見つかりませんでした。");

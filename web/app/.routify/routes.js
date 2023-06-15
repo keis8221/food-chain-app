@@ -1,10 +1,10 @@
 /**
  * @roxi/routify 2.18.8
- * File generated Sun Dec 11 2022 13:32:09 GMT+0900 (日本標準時)
+ * File generated Wed Jun 14 2023 15:39:46 GMT+0900 (Japan Standard Time)
  */
 
 export const __version = "2.18.8";
-export const __timestamp = "2022-12-11T04:32:09.263Z";
+export const __timestamp = "2023-06-14T06:39:46.425Z";
 
 //buildRoutes
 import { buildClientTree } from "@roxi/routify/runtime/buildRoutes";
@@ -23,7 +23,7 @@ export const _tree = {
     preload: "proximity",
   },
   absolutePath:
-    "/Users/sugawarakei/Desktop/BabaCafe/web/app/src/pages/_layout.svelte",
+    "/home/yoshiki_kitajima/BabaCafe/web/app/src/pages/_layout.svelte",
   children: [
     {
       isFile: true,
@@ -34,7 +34,7 @@ export const _tree = {
       ext: "svelte",
       badExt: false,
       absolutePath:
-        "/Users/sugawarakei/Desktop/BabaCafe/web/app/src/pages/_fallback.svelte",
+        "/home/yoshiki_kitajima/BabaCafe/web/app/src/pages/_fallback.svelte",
       importPath: "../src/pages/_fallback.svelte",
       isLayout: false,
       isReset: false,
@@ -61,7 +61,7 @@ export const _tree = {
       ext: "svelte",
       badExt: false,
       absolutePath:
-        "/Users/sugawarakei/Desktop/BabaCafe/web/app/src/pages/index.svelte",
+        "/home/yoshiki_kitajima/BabaCafe/web/app/src/pages/index.svelte",
       importPath: "../src/pages/index.svelte",
       isLayout: false,
       isReset: false,
@@ -80,15 +80,15 @@ export const _tree = {
         import("../src/pages/index.svelte").then((m) => m.default),
     },
     {
-      isFile: false,
+      isFile: true,
       isDir: true,
-      file: "login",
-      filepath: "/login",
-      name: "login",
-      ext: "",
+      file: "_reset.svelte",
+      filepath: "/login/_reset.svelte",
+      name: "_reset",
+      ext: "svelte",
       badExt: false,
       absolutePath:
-        "/Users/sugawarakei/Desktop/BabaCafe/web/app/src/pages/login",
+        "/home/yoshiki_kitajima/BabaCafe/web/app/src/pages/login/_reset.svelte",
       children: [
         {
           isFile: true,
@@ -99,7 +99,7 @@ export const _tree = {
           ext: "svelte",
           badExt: false,
           absolutePath:
-            "/Users/sugawarakei/Desktop/BabaCafe/web/app/src/pages/login/index.svelte",
+            "/home/yoshiki_kitajima/BabaCafe/web/app/src/pages/login/index.svelte",
           importPath: "../src/pages/login/index.svelte",
           isLayout: false,
           isReset: false,
@@ -118,11 +118,12 @@ export const _tree = {
             import("../src/pages/login/index.svelte").then((m) => m.default),
         },
       ],
-      isLayout: false,
-      isReset: false,
+      isLayout: true,
+      isReset: true,
       isIndex: false,
       isFallback: false,
       isPage: false,
+      importPath: "../src/pages/login/_reset.svelte",
       ownMeta: {},
       meta: {
         recursive: true,
@@ -130,6 +131,9 @@ export const _tree = {
         prerender: true,
       },
       path: "/login",
+      id: "_login__reset",
+      component: () =>
+        import("../src/pages/login/_reset.svelte").then((m) => m.default),
     },
     {
       isFile: false,
@@ -139,9 +143,62 @@ export const _tree = {
       name: "product",
       ext: "",
       badExt: false,
-      absolutePath:
-        "/Users/sugawarakei/Desktop/BabaCafe/web/app/src/pages/product",
+      absolutePath: "/home/yoshiki_kitajima/BabaCafe/web/app/src/pages/product",
       children: [
+        {
+          isFile: false,
+          isDir: true,
+          file: "[id]",
+          filepath: "/product/[id]",
+          name: "[id]",
+          ext: "",
+          badExt: false,
+          absolutePath:
+            "/home/yoshiki_kitajima/BabaCafe/web/app/src/pages/product/[id]",
+          children: [
+            {
+              isFile: true,
+              isDir: false,
+              file: "index.svelte",
+              filepath: "/product/[id]/index.svelte",
+              name: "index",
+              ext: "svelte",
+              badExt: false,
+              absolutePath:
+                "/home/yoshiki_kitajima/BabaCafe/web/app/src/pages/product/[id]/index.svelte",
+              importPath: "../src/pages/product/[id]/index.svelte",
+              isLayout: false,
+              isReset: false,
+              isIndex: true,
+              isFallback: false,
+              isPage: true,
+              ownMeta: {},
+              meta: {
+                recursive: true,
+                preload: "proximity",
+                prerender: true,
+              },
+              path: "/product/:id/index",
+              id: "_product__id_index",
+              component: () =>
+                import("../src/pages/product/[id]/index.svelte").then(
+                  (m) => m.default
+                ),
+            },
+          ],
+          isLayout: false,
+          isReset: false,
+          isIndex: false,
+          isFallback: false,
+          isPage: false,
+          ownMeta: {},
+          meta: {
+            recursive: true,
+            preload: "proximity",
+            prerender: true,
+          },
+          path: "/product/:id",
+        },
         {
           isFile: true,
           isDir: false,
@@ -151,7 +208,7 @@ export const _tree = {
           ext: "svelte",
           badExt: false,
           absolutePath:
-            "/Users/sugawarakei/Desktop/BabaCafe/web/app/src/pages/product/index.svelte",
+            "/home/yoshiki_kitajima/BabaCafe/web/app/src/pages/product/index.svelte",
           importPath: "../src/pages/product/index.svelte",
           isLayout: false,
           isReset: false,
@@ -178,7 +235,7 @@ export const _tree = {
           ext: "svelte",
           badExt: false,
           absolutePath:
-            "/Users/sugawarakei/Desktop/BabaCafe/web/app/src/pages/product/new.svelte",
+            "/home/yoshiki_kitajima/BabaCafe/web/app/src/pages/product/new.svelte",
           importPath: "../src/pages/product/new.svelte",
           isLayout: false,
           isReset: false,
@@ -219,8 +276,62 @@ export const _tree = {
       ext: "",
       badExt: false,
       absolutePath:
-        "/Users/sugawarakei/Desktop/BabaCafe/web/app/src/pages/reservation",
+        "/home/yoshiki_kitajima/BabaCafe/web/app/src/pages/reservation",
       children: [
+        {
+          isFile: false,
+          isDir: true,
+          file: "[id]",
+          filepath: "/reservation/[id]",
+          name: "[id]",
+          ext: "",
+          badExt: false,
+          absolutePath:
+            "/home/yoshiki_kitajima/BabaCafe/web/app/src/pages/reservation/[id]",
+          children: [
+            {
+              isFile: true,
+              isDir: false,
+              file: "index.svelte",
+              filepath: "/reservation/[id]/index.svelte",
+              name: "index",
+              ext: "svelte",
+              badExt: false,
+              absolutePath:
+                "/home/yoshiki_kitajima/BabaCafe/web/app/src/pages/reservation/[id]/index.svelte",
+              importPath: "../src/pages/reservation/[id]/index.svelte",
+              isLayout: false,
+              isReset: false,
+              isIndex: true,
+              isFallback: false,
+              isPage: true,
+              ownMeta: {},
+              meta: {
+                recursive: true,
+                preload: "proximity",
+                prerender: true,
+              },
+              path: "/reservation/:id/index",
+              id: "_reservation__id_index",
+              component: () =>
+                import("../src/pages/reservation/[id]/index.svelte").then(
+                  (m) => m.default
+                ),
+            },
+          ],
+          isLayout: false,
+          isReset: false,
+          isIndex: false,
+          isFallback: false,
+          isPage: false,
+          ownMeta: {},
+          meta: {
+            recursive: true,
+            preload: "proximity",
+            prerender: true,
+          },
+          path: "/reservation/:id",
+        },
         {
           isFile: true,
           isDir: false,
@@ -230,7 +341,7 @@ export const _tree = {
           ext: "svelte",
           badExt: false,
           absolutePath:
-            "/Users/sugawarakei/Desktop/BabaCafe/web/app/src/pages/reservation/index.svelte",
+            "/home/yoshiki_kitajima/BabaCafe/web/app/src/pages/reservation/index.svelte",
           importPath: "../src/pages/reservation/index.svelte",
           isLayout: false,
           isReset: false,
@@ -247,6 +358,35 @@ export const _tree = {
           id: "_reservation_index",
           component: () =>
             import("../src/pages/reservation/index.svelte").then(
+              (m) => m.default
+            ),
+        },
+        {
+          isFile: true,
+          isDir: false,
+          file: "new.svelte",
+          filepath: "/reservation/new.svelte",
+          name: "new",
+          ext: "svelte",
+          badExt: false,
+          absolutePath:
+            "/home/yoshiki_kitajima/BabaCafe/web/app/src/pages/reservation/new.svelte",
+          importPath: "../src/pages/reservation/new.svelte",
+          isLayout: false,
+          isReset: false,
+          isIndex: false,
+          isFallback: false,
+          isPage: true,
+          ownMeta: {},
+          meta: {
+            recursive: true,
+            preload: "proximity",
+            prerender: true,
+          },
+          path: "/reservation/new",
+          id: "_reservation_new",
+          component: () =>
+            import("../src/pages/reservation/new.svelte").then(
               (m) => m.default
             ),
         },
@@ -272,8 +412,7 @@ export const _tree = {
       name: "setting",
       ext: "",
       badExt: false,
-      absolutePath:
-        "/Users/sugawarakei/Desktop/BabaCafe/web/app/src/pages/setting",
+      absolutePath: "/home/yoshiki_kitajima/BabaCafe/web/app/src/pages/setting",
       children: [
         {
           isFile: true,
@@ -284,7 +423,7 @@ export const _tree = {
           ext: "svelte",
           badExt: false,
           absolutePath:
-            "/Users/sugawarakei/Desktop/BabaCafe/web/app/src/pages/setting/index.svelte",
+            "/home/yoshiki_kitajima/BabaCafe/web/app/src/pages/setting/index.svelte",
           importPath: "../src/pages/setting/index.svelte",
           isLayout: false,
           isReset: false,
@@ -317,15 +456,15 @@ export const _tree = {
       path: "/setting",
     },
     {
-      isFile: false,
+      isFile: true,
       isDir: true,
-      file: "signup",
-      filepath: "/signup",
-      name: "signup",
-      ext: "",
+      file: "_reset.svelte",
+      filepath: "/signup/_reset.svelte",
+      name: "_reset",
+      ext: "svelte",
       badExt: false,
       absolutePath:
-        "/Users/sugawarakei/Desktop/BabaCafe/web/app/src/pages/signup",
+        "/home/yoshiki_kitajima/BabaCafe/web/app/src/pages/signup/_reset.svelte",
       children: [
         {
           isFile: true,
@@ -336,7 +475,7 @@ export const _tree = {
           ext: "svelte",
           badExt: false,
           absolutePath:
-            "/Users/sugawarakei/Desktop/BabaCafe/web/app/src/pages/signup/index.svelte",
+            "/home/yoshiki_kitajima/BabaCafe/web/app/src/pages/signup/index.svelte",
           importPath: "../src/pages/signup/index.svelte",
           isLayout: false,
           isReset: false,
@@ -355,11 +494,12 @@ export const _tree = {
             import("../src/pages/signup/index.svelte").then((m) => m.default),
         },
       ],
-      isLayout: false,
-      isReset: false,
+      isLayout: true,
+      isReset: true,
       isIndex: false,
       isFallback: false,
       isPage: false,
+      importPath: "../src/pages/signup/_reset.svelte",
       ownMeta: {},
       meta: {
         recursive: true,
@@ -367,6 +507,9 @@ export const _tree = {
         prerender: true,
       },
       path: "/signup",
+      id: "_signup__reset",
+      component: () =>
+        import("../src/pages/signup/_reset.svelte").then((m) => m.default),
     },
   ],
   isLayout: true,

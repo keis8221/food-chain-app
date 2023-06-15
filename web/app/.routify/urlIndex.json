@@ -4,6 +4,7 @@
   "/product/index",
   "/product/new",
   "/reservation/index",
+  "/reservation/new",
   "/setting/index",
   "/signup/index"
 ]
