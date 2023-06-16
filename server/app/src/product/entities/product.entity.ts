@@ -1,8 +1,7 @@
-import { BaseEntityAddHashId } from 'src/common/base-entity-add-hash-id';
-import { ReservationProducts } from 'src/reservation/entities/reservation.entity';
-import { Producer } from 'src/user/entities/producer.entity';
-import { getUrl } from 'src/utils/file';
+import { Reservation } from 'src/reservation/entities/reservation.entity';
+import { Account } from 'src/account/entities/account.entity';
 import {
+  BaseEntity,
   Column,
   CreateDateColumn,
   DeleteDateColumn,
@@ -13,93 +12,131 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Review } from './review.entity';
 
-export const PRODUCT_STATUS = {
-  ON_SALE: 'onSale', // 販売中
-  SOLD_OUT: 'soldOut', // 売り切れ
-  WILL_SALE: 'willSale', // 販売予定
-  SALE_OUT: 'saleOut', // 販売終了
+export const CROP_KINDS = {
+  vegetables: 'vegetables', // 野菜
+  grains: 'grains', // 穀物
+  fruits: 'fruits', // 果物
+  flowers: 'flowers', // 花
+  livestock: 'livestock', // 畜産物
+  others: 'others', // その他
+};
+
+export const CROP_UNITS = {
+  gram: 'gram', // g
+  stalk: 'stalk', // 本
+  piece: 'piece', // 個
+  portion: 'portion', // 玉
+  share: 'share', // 株
+  bundle: 'bundle', // 束
+  pile: 'pile', // 山
+  pack: 'pack', // パック
+  bag: 'bag', // 袋
 };
 
 @Entity()
-export class Product extends BaseEntityAddHashId {
-  @PrimaryGeneratedColumn({ type: 'bigint' })
-  id: number;
+export class Product extends BaseEntity {
+  @PrimaryGeneratedColumn('uuid', { comment: '出品ID' })
+  readonly id!: string;
 
-  @Column({ default: null })
-  name: string;
+  @Column({ comment: '生産者ID', type: 'uuid', name: 'producer_id' })
+  producerId: string;
 
-  @Column({ default: null })
-  description: string;
+  @Column({ comment: '作物名', type: 'varchar', length: 30 })
+  name!: string;
 
-  @Column({ default: null })
-  image: string;
+  @Column({ comment: '作物の種類', type: 'varchar', length: 10 })
+  kinds!: typeof CROP_KINDS[keyof typeof CROP_KINDS];
 
-  @Column({ default: null })
-  saleStartDate: Date;
+  @Column({ comment: '説明', type: 'text', default: '' })
+  description?: string;
 
-  @Column({ type: 'varchar', default: null })
-  status: typeof PRODUCT_STATUS[keyof typeof PRODUCT_STATUS];
+  @Column({ comment: '予約開始', type: 'timestamptz', name: 'start_at' })
+  startAt!: Date;
 
-  @Column({ default: null })
-  price: number;
+  @Column({ comment: '予約終了', type: 'timestamptz', name: 'end_at' })
+  endAt!: Date;
 
-  @Column({ default: null, comment: '商品単位の重量（g）' })
-  unitWeight: number;
+  @Column({ comment: '単位', type: 'varchar', length: 10 })
+  unit!: typeof CROP_UNITS[keyof typeof CROP_UNITS];
 
-  @Column({ default: null })
-  totalAmount: number;
+  @Column({
+    comment: '単価数量',
+    type: 'int',
+    default: 1,
+    name: 'unit_quantity',
+  })
+  unitQuantity: number;
 
-  @CreateDateColumn()
+  @Column({ comment: '単価', type: 'int', default: 1, name: 'unit_price' })
+  unitPrice!: number;
+
+  @Column({ comment: '画像', type: 'text', default: null, nullable: true })
+  image?: string;
+
+  @Column({ comment: '予約数量', type: 'int', default: 1 })
+  quantity: number;
+
+  @Column({ comment: '残数量', type: 'int', default: 1 })
+  remaining: number;
+
+  @CreateDateColumn({
+    comment: '作成日時',
+    type: 'timestamptz',
+    name: 'created_at',
+  })
   readonly createdAt?: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({
+    comment: '更新日時',
+    type: 'timestamptz',
+    name: 'updated_at',
+  })
   readonly updatedAt?: Date;
 
-  @DeleteDateColumn()
+  @DeleteDateColumn({
+    comment: '削除日時',
+    type: 'timestamptz',
+    name: 'deleted_at',
+  })
   readonly deletedAt?: Date;
 
-  @OneToMany(
-    () => ReservationProducts,
-    (reservationProducts) => reservationProducts.product,
-  )
-  @JoinColumn()
-  reservationProducts: ReservationProducts[];
+  @ManyToOne(() => Account, (account) => account.products)
+  @JoinColumn({ name: 'producer_id', referencedColumnName: 'id' })
+  producer: Account;
 
-  @OneToMany(() => Review, (review) => review.product)
-  @JoinColumn()
-  reviews: Review[];
-
-  @ManyToOne(() => Producer, (producer) => producer.products)
-  producer: Producer;
+  @OneToMany(() => Reservation, (reservation) => reservation.product)
+  reservations: Reservation[];
 
   convertTProduct(): TProduct {
     return {
       ...this,
-      id: this.hashId,
       image: this.image,
-      producer: this.producer?.convertTProducer(),
+      producer: this.producer,
+      reservations: this.reservations,
     };
   }
 }
 
 export type TProduct = Pick<
   Product,
+  | 'producerId'
   | 'name'
-  | 'image'
+  | 'kinds'
   | 'description'
-  | 'saleStartDate'
-  | 'status'
-  | 'price'
-  | 'unitWeight'
-  | 'totalAmount'
+  | 'startAt'
+  | 'endAt'
+  | 'unit'
+  | 'unitQuantity'
+  | 'unitPrice'
+  | 'image'
+  | 'quantity'
+  | 'remaining'
   | 'createdAt'
   | 'updatedAt'
   | 'deletedAt'
 > & {
   id: string;
-  reviews: Review[];
-  producer?: Producer;
-  reservationProducts: ReservationProducts[];
+  producer: Account;
+  reservations: Reservation[];
 };

@@ -1,14 +1,11 @@
 import { BaseEntityAddHashId } from 'src/common/base-entity-add-hash-id';
 import { Shop } from 'src/shop/entities/shop.entity';
-import { Consumer } from 'src/user/entities/consumer.entity';
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
   JoinColumn,
-  JoinTable,
-  ManyToMany,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -45,8 +42,4 @@ export class LineProvider extends BaseEntityAddHashId {
   @OneToOne(() => Shop, (shop) => shop.lineProvider)
   @JoinColumn()
   shop: Shop;
-
-  @ManyToMany(() => Consumer, (consumer) => consumer.lineProviders)
-  @JoinTable()
-  consumers: Consumer[];
 }

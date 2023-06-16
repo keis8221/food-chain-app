@@ -1,131 +1,166 @@
-import { BaseEntityAddHashId } from 'src/common/base-entity-add-hash-id';
 import { Product } from 'src/product/entities/product.entity';
 import { Shop } from 'src/shop/entities/shop.entity';
-import { User } from 'src/user/entities/user.entity';
+import { Account } from 'src/account/entities/account.entity';
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  BaseEntity,
   JoinColumn,
   ManyToOne,
-  OneToMany,
-  PrimaryColumn,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
 export const RESERVATION_STATUS = {
-  CANCEL: 'cancel',
-  UNDISPATCHED: 'undispatched',
-  SHIPPING: 'shipping',
-  DELIVERED: 'delivered',
-  COMPLETE: 'complete',
+  canceled: 'canceled', // キャンセル
+  packking: 'packking', // 出荷準備中
+  shipping: 'shipping', // 配送中
+  keeping: 'keeping', // 店舗保管中
+  completed: 'completed', // 受取完了
 } as const;
 
 @Entity()
-export class Reservation extends BaseEntityAddHashId {
-  @PrimaryGeneratedColumn({ type: 'bigint' })
-  id: number;
+export class Reservation extends BaseEntity {
+  @PrimaryGeneratedColumn('uuid', { comment: 'ユーザーID' })
+  readonly id!: string;
 
-  @Column({ default: null, comment: '出荷日時' })
-  shippingDate: Date;
+  @Column({ comment: '消費者ID', type: 'uuid', name: 'consumer_id' })
+  consumerId: string;
 
-  @Column({ default: null })
+  @Column({ comment: '出品ID', type: 'uuid', name: 'product_id' })
+  productId: string;
+
+  @Column({ comment: '予約数量', type: 'int', default: 1 })
+  quantity: number;
+
+  @Column({ comment: '総額', type: 'int', default: 0, name: 'total_price' })
   totalPrice: number;
 
-  @Column({ default: null, comment: '予約日時' })
-  reservationDate: Date;
+  @Column({ comment: '受取希望日時', type: 'timestamptz', name: 'desired_at' })
+  desiredAt!: Date;
 
-  @Column({ type: 'varchar', default: null })
+  @Column({ comment: '受取場所ID', type: 'uuid', name: 'receive_location_id' })
+  receiveLocationId: string;
+
+  @Column({ comment: 'ステータス', type: 'varchar', length: 10 })
   status: typeof RESERVATION_STATUS[keyof typeof RESERVATION_STATUS];
 
-  @ManyToOne(() => Shop, (shop) => shop.reservations)
-  shop: Shop;
+  @Column({
+    comment: '配送者ID',
+    type: 'uuid',
+    name: 'shipper_id',
+    default: null,
+    nullable: true,
+  })
+  shipperId: string;
 
-  @ManyToOne(() => User, (user) => user.reservations)
-  user: User;
+  @Column({
+    comment: '出荷日時',
+    type: 'timestamptz',
+    name: 'packed_at',
+    default: null,
+    nullable: true,
+  })
+  packedAt: Date;
 
-  @OneToMany(
-    () => ReservationProducts,
-    (reservationProducts) => reservationProducts.reservation,
-  )
-  reservationProducts: ReservationProducts[];
+  @Column({
+    comment: '配送日時',
+    type: 'timestamptz',
+    name: 'shipped_at',
+    default: null,
+    nullable: true,
+  })
+  shippedAt: Date;
 
-  @CreateDateColumn()
+  @Column({
+    comment: '店舗預かり日時',
+    type: 'timestamptz',
+    name: 'kept_at',
+    default: null,
+    nullable: true,
+  })
+  keptAt: Date;
+
+  @Column({
+    comment: '受取日時',
+    type: 'timestamptz',
+    name: 'received_at',
+    default: null,
+    nullable: true,
+  })
+  receivedAt: Date;
+
+  @CreateDateColumn({
+    comment: '作成日時',
+    type: 'timestamptz',
+    name: 'created_at',
+  })
   readonly createdAt?: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({
+    comment: '更新日時',
+    type: 'timestamptz',
+    name: 'updated_at',
+  })
   readonly updatedAt?: Date;
 
-  @DeleteDateColumn()
+  @DeleteDateColumn({
+    comment: '削除日時',
+    type: 'timestamptz',
+    name: 'deleted_at',
+  })
   readonly deletedAt?: Date;
 
-  convertTReservation() {
+  @ManyToOne(() => Account, (account) => account.reservations)
+  @JoinColumn({ name: 'consumer_id', referencedColumnName: 'id' })
+  consumer: Account;
+
+  @ManyToOne(() => Product, (product) => product.reservations)
+  @JoinColumn({ name: 'product_id', referencedColumnName: 'id' })
+  product: Product;
+
+  @ManyToOne(() => Shop, (shop) => shop.reservations)
+  @JoinColumn({ name: 'receive_location_id', referencedColumnName: 'id' })
+  shop: Shop;
+
+  @ManyToOne(() => Account, (account) => account.reservations)
+  @JoinColumn({ name: 'shipper_id', referencedColumnName: 'id' })
+  shipper: Account;
+
+  convertTReservation(): TReservation {
     return {
       ...this,
-      id: this.hashId,
-      user: this.user?.convertTUser(),
+      consumer: this.consumer,
+      product: this.product,
+      shop: this.shop,
+      shipper: this.shipper,
     };
   }
 }
 
 export type TReservation = Pick<
   Reservation,
-  | 'shippingDate'
+  | 'consumerId'
+  | 'productId'
+  | 'quantity'
   | 'totalPrice'
+  | 'desiredAt'
+  | 'receiveLocationId'
   | 'status'
-  | 'reservationDate'
+  | 'shipperId'
+  | 'packedAt'
+  | 'shippedAt'
+  | 'keptAt'
+  | 'receivedAt'
   | 'createdAt'
   | 'updatedAt'
   | 'deletedAt'
 > & {
   id: string;
+  consumer: Account;
+  product: Product;
   shop: Shop;
-  user: User;
-  reservationProducts: ReservationProducts[];
-};
-
-@Entity()
-export class ReservationProducts extends BaseEntityAddHashId {
-  @PrimaryGeneratedColumn({ type: 'bigint' })
-  id: number;
-
-  @PrimaryColumn()
-  reservationId: number;
-
-  @PrimaryColumn()
-  productId: number;
-
-  @Column({ comment: '購入する商品数' })
-  quantity: number;
-
-  @ManyToOne(
-    () => Reservation,
-    (reservation) => reservation.reservationProducts,
-  )
-  @JoinColumn({ name: 'reservationId', referencedColumnName: 'id' })
-  reservation: Reservation;
-
-  @ManyToOne(() => Product, (product) => product.reservationProducts)
-  @JoinColumn({ name: 'productId', referencedColumnName: 'id' })
-  product: Product;
-
-  convertTReservationProduct(): TReservationProduct {
-    return {
-      ...this,
-      id: this.hashId,
-      product: this.product.convertTProduct(),
-      reservation: this.reservation.convertTReservation(),
-    };
-  }
-}
-
-export type TReservationProduct = Pick<
-  ReservationProducts,
-  'quantity' | 'reservationId' | 'productId'
-> & {
-  id: string;
-  reservation: Reservation;
-  product: Product;
+  shipper: Account;
 };

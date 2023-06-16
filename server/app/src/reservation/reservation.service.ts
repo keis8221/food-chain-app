@@ -1,10 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
 import * as dayjs from 'dayjs';
-import { Account } from 'src/auth/entities/account.entity';
+import { Account, USER_ATTRIBUTE } from 'src/account/entities/account.entity';
 import { Product } from 'src/product/entities/product.entity';
-import { Shop } from 'src/shop/entities/shop.entity';
-import { User } from 'src/user/entities/user.entity';
 import {
   DataSource,
   EntityManager,
@@ -14,105 +12,78 @@ import {
 import { CreateReservationDto } from './dto/create-reservation.dto';
 import {
   Reservation,
-  ReservationProducts,
   RESERVATION_STATUS,
   TReservation,
-  TReservationProduct,
 } from './entities/reservation.entity';
-import { Producer } from 'src/user/entities/producer.entity';
 
 @Injectable()
 export class ReservationService {
   constructor(
+    @InjectRepository(Reservation)
+    private reservationRepository: Repository<Reservation>,
     @InjectRepository(Product)
     private productRepository: Repository<Product>,
-    @InjectRepository(Producer)
-    private producerRepository: Repository<Producer>,
-    @InjectRepository(ReservationProducts)
-    private reservationProductRepository: Repository<ReservationProducts>,
-    @InjectRepository(Shop)
-    private shopRepository: Repository<Shop>,
     @InjectRepository(Account)
     private accountRepository: Repository<Account>,
     @InjectDataSource() private dataSource: DataSource,
   ) {}
 
-  async getReservationProducts(
-    accountId: string,
-  ): Promise<TReservationProduct[]> {
-    let where: FindOptionsWhere<ReservationProducts> = {};
-    const account = await this.accountRepository.findOne({
-      where: { hashId: accountId },
-      relations: { user: { producer: true } },
-    });
+  async getReservations(account: Account): Promise<TReservation[]> {
+    let where: FindOptionsWhere<Reservation> = {};
 
-    if (account.user.mainStatus === 'producer') {
+    if (account.attribute === USER_ATTRIBUTE.producer) {
       where = {
         ...where,
         product: {
           producer: {
-            id: account.user.producer.id,
+            id: account.id,
           },
         },
       };
-    } else if (account.user.mainStatus === 'staff') {
+    } else if (account.attribute === USER_ATTRIBUTE.consumer) {
       where = {
         ...where,
-        reservation: {
-          shop: {
-            id: account.user.staff?.shop.id,
-          },
-        },
+        consumerId: account.id,
       };
     }
 
-    return await this.reservationProductRepository
+    return await this.reservationRepository
       .find({
         where,
-        relations: { reservation: { shop: true, user: true }, product: true },
-        order: { id: 'DESC' },
+        relations: { consumer: true, product: true, shipper: true, shop: true },
+        order: { createdAt: 'DESC' },
       })
-      .then((reservationProducts) =>
-        reservationProducts?.map((reservationProduct) =>
-          reservationProduct.convertTReservationProduct(),
-        ),
+      .then((reservation) =>
+        reservation?.map((reservation) => reservation.convertTReservation()),
       );
   }
 
-  async getReservationProduct(id: number): Promise<TReservationProduct> {
-    return await this.reservationProductRepository
+  async getReservation(id: string): Promise<TReservation> {
+    return await this.reservationRepository
       .findOne({
         where: { id },
-        relations: { reservation: { shop: true, user: true }, product: true },
+        relations: { consumer: true, product: true, shipper: true, shop: true },
       })
-      .then((reservationProduct) =>
-        reservationProduct.convertTReservationProduct(),
-      );
+      .then((reservation) => reservation.convertTReservation());
   }
 
   async createReservation(
     dto: CreateReservationDto,
-    accountId: string,
+    account: Account,
   ): Promise<TReservation> {
-    const account = await this.accountRepository.findOne({
-      where: { hashId: accountId },
-      relations: { user: true },
-    });
-
     const reservation = new Reservation();
-    const shop = await this.shopRepository.findOne({
-      where: { hashId: dto.shopId },
+    const product = await this.productRepository.findOne({
+      where: { id: dto.productId },
     });
-    this.setReservationAttributes(dto, reservation, shop, account.user);
+    this.setReservationAttributes(dto, reservation, product, account);
 
-    await this.dataSource.manager.transaction(async (manager) => {
-      // save時にPrimaryGeneratedKeyが発行されるため、一旦save
-      await manager.save(reservation);
-
-      await this.saveReservationProducts(dto, reservation, manager);
-
-      await manager.save(reservation);
-    });
+    await this.dataSource.manager.transaction(
+      async (manager: EntityManager) => {
+        product.remaining -= dto.quantity;
+        await manager.save(product);
+        await manager.save(reservation);
+      },
+    );
 
     return reservation.convertTReservation();
   }
@@ -120,40 +91,15 @@ export class ReservationService {
   private async setReservationAttributes(
     dto: CreateReservationDto,
     reservation: Reservation,
-    shop: Shop,
-    user: User,
+    product: Product,
+    account: Account,
   ) {
-    reservation.shippingDate = dayjs(dto.shippingDate).toDate();
-    reservation.reservationDate = dayjs(dto.reservationDate).toDate();
-    reservation.status = RESERVATION_STATUS.UNDISPATCHED;
-    reservation.totalPrice = dto.totalPrice;
-    reservation.shop = shop;
-    reservation.user = user;
-  }
-
-  private async saveReservationProducts(
-    dto: CreateReservationDto,
-    reservation: Reservation,
-    txManager: EntityManager,
-  ) {
-    await Promise.all(
-      dto.products.map(async (dtoProduct) => {
-        const product = await this.productRepository.findOne({
-          where: { hashId: dtoProduct.productId },
-        });
-        product.totalAmount -= dtoProduct.quantity;
-        await txManager.save(product);
-
-        const reservationProducts = new ReservationProducts();
-
-        reservationProducts.product = product;
-        reservationProducts.productId = product.id;
-        reservationProducts.reservation = reservation;
-        reservationProducts.reservationId = reservation.id;
-        reservationProducts.quantity = dtoProduct.quantity;
-
-        await txManager.save(reservationProducts);
-      }),
-    );
+    reservation.consumerId = account.id;
+    reservation.productId = dto.productId;
+    reservation.quantity = dto.quantity;
+    reservation.totalPrice = dto.quantity * product.unitPrice;
+    reservation.desiredAt = dayjs(dto.desiredAt).toDate();
+    reservation.receiveLocationId = dto.receiveLocationId;
+    reservation.status = RESERVATION_STATUS.packking;
   }
 }

@@ -4,7 +4,7 @@
   import {
     ReservationRepository,
     statusToText,
-    type TReservationProduct,
+    type TReservation,
   } from "../../../models/Reservation";
   import CircularProgress from "@smui/circular-progress";
   import { goto, params } from "@roxi/routify";
@@ -15,7 +15,7 @@
   import { onMount } from "svelte";
   import { AuthService } from "../../../services/AuthService";
 
-  let dialogData: TReservationProduct;
+  let reservationData: TReservation;
   let currentAccount: Record<string, string>;
 
   $: reservationRepository = new ReservationRepository();
@@ -41,53 +41,51 @@
   <div style="display: flex; justify-content: center">
     <CircularProgress style="height: 160px; width: 32px;" indeterminate />
   </div>
-{:then dialogData}
-  {console.log(dialogData)}
+{:then reservationData}
   <div class="mt-3 flex justify-between">
     <h2 class="m-4 text-2xl font-bold">予約詳細</h2>
     <div class="m-2 mr-4">
-      <StatusLabel status={dialogData.reservation.status} />
+      <StatusLabel status={reservationData.status} />
     </div>
   </div>
   <Content>
     <div class="reservationsBody">
       <div class="mb-2">
         <div class="text-lg font-bold">
-          商品名：{dialogData.product.name}
+          商品名：{reservationData.product.name}
         </div>
         <div class="text-lg font-bold">
-          個数：{dialogData.quantity}
+          個数：{reservationData.quantity}
         </div>
       </div>
       <img
         class="w-[512px] h-auto"
-        src={dialogData.product.image ??
+        src={reservationData.product.image ??
           "https://girlydrop.com/wp-content/uploads/post/p5774.jpg"}
         alt=""
       />
       <div class="mt-4">
         <div class="text-lg font-bold">
-          予約者名：{dialogData.reservation.user?.name}
+          予約者名：{reservationData.consumer.name}
           <br />
-          受け取り希望日時：{dayjs(dialogData.reservation.shippingDate).format(
+          受け取り希望日時：{dayjs(reservationData.desiredAt).format(
             "YYYY-MM-DD"
           )}
           <br />
-          受け取り場所：{dialogData.reservation.shop.name}
+          受け取り場所：{reservationData.shop.name}
           <br />
-          住所：{dialogData.reservation.shop.address +
-            dialogData.reservation.shop.address2}
+          住所：{reservationData.shop.address}
         </div>
       </div>
     </div>
   </Content>
-  {#if currentAccount.status === "staff"}
+  <!-- {#if currentAccount.status === "staff"}
     <Actions>
       <Button class="mb-2" color="primary" variant="raised">
         <p class="font-bold text-lg">受け取り完了</p>
       </Button>
     </Actions>
-  {/if}
+  {/if} -->
 {/await}
 
 <style>

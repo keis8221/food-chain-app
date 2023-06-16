@@ -4,8 +4,8 @@
   import { createField } from "felte";
 
   export let name: string;
-  export let helperText: string = "";
-  export let label: string = "";
+  export let helperText = "";
+  export let label = "";
   export let textValue: number;
   export let onChange = undefined;
 

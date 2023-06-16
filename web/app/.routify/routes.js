@@ -1,10 +1,10 @@
 /**
  * @roxi/routify 2.18.8
- * File generated Wed Jun 14 2023 15:39:46 GMT+0900 (Japan Standard Time)
+ * File generated Fri Jun 16 2023 14:38:11 GMT+0900 (Japan Standard Time)
  */
 
 export const __version = "2.18.8";
-export const __timestamp = "2023-06-14T06:39:46.425Z";
+export const __timestamp = "2023-06-16T05:38:11.870Z";
 
 //buildRoutes
 import { buildClientTree } from "@roxi/routify/runtime/buildRoutes";
@@ -80,15 +80,14 @@ export const _tree = {
         import("../src/pages/index.svelte").then((m) => m.default),
     },
     {
-      isFile: true,
+      isFile: false,
       isDir: true,
-      file: "_reset.svelte",
-      filepath: "/login/_reset.svelte",
-      name: "_reset",
-      ext: "svelte",
+      file: "login",
+      filepath: "/login",
+      name: "login",
+      ext: "",
       badExt: false,
-      absolutePath:
-        "/home/yoshiki_kitajima/BabaCafe/web/app/src/pages/login/_reset.svelte",
+      absolutePath: "/home/yoshiki_kitajima/BabaCafe/web/app/src/pages/login",
       children: [
         {
           isFile: true,
@@ -118,12 +117,11 @@ export const _tree = {
             import("../src/pages/login/index.svelte").then((m) => m.default),
         },
       ],
-      isLayout: true,
-      isReset: true,
+      isLayout: false,
+      isReset: false,
       isIndex: false,
       isFallback: false,
       isPage: false,
-      importPath: "../src/pages/login/_reset.svelte",
       ownMeta: {},
       meta: {
         recursive: true,
@@ -131,9 +129,6 @@ export const _tree = {
         prerender: true,
       },
       path: "/login",
-      id: "_login__reset",
-      component: () =>
-        import("../src/pages/login/_reset.svelte").then((m) => m.default),
     },
     {
       isFile: false,
@@ -456,15 +451,14 @@ export const _tree = {
       path: "/setting",
     },
     {
-      isFile: true,
+      isFile: false,
       isDir: true,
-      file: "_reset.svelte",
-      filepath: "/signup/_reset.svelte",
-      name: "_reset",
-      ext: "svelte",
+      file: "signup",
+      filepath: "/signup",
+      name: "signup",
+      ext: "",
       badExt: false,
-      absolutePath:
-        "/home/yoshiki_kitajima/BabaCafe/web/app/src/pages/signup/_reset.svelte",
+      absolutePath: "/home/yoshiki_kitajima/BabaCafe/web/app/src/pages/signup",
       children: [
         {
           isFile: true,
@@ -494,12 +488,11 @@ export const _tree = {
             import("../src/pages/signup/index.svelte").then((m) => m.default),
         },
       ],
-      isLayout: true,
-      isReset: true,
+      isLayout: false,
+      isReset: false,
       isIndex: false,
       isFallback: false,
       isPage: false,
-      importPath: "../src/pages/signup/_reset.svelte",
       ownMeta: {},
       meta: {
         recursive: true,
@@ -507,9 +500,6 @@ export const _tree = {
         prerender: true,
       },
       path: "/signup",
-      id: "_signup__reset",
-      component: () =>
-        import("../src/pages/signup/_reset.svelte").then((m) => m.default),
     },
   ],
   isLayout: true,
