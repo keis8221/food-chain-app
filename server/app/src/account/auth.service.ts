@@ -43,6 +43,9 @@ export class AuthService {
       classification: account.classification,
       attribute: account.attribute,
       name: account.name,
+      tel: account.tel,
+      zipCode: account.zipCode,
+      address: account.address,
     };
 
     return {
@@ -52,6 +55,9 @@ export class AuthService {
       classification: payload.classification,
       attribute: payload.attribute,
       name: payload.name,
+      tel: payload.tel,
+      zipCode: payload.zipCode,
+      address: payload.address,
     };
   }
 }

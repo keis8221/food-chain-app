@@ -9,4 +9,7 @@ export interface JwtPayload {
   classification: typeof USER_CLASSIFICATION[keyof typeof USER_CLASSIFICATION];
   attribute: typeof USER_ATTRIBUTE[keyof typeof USER_ATTRIBUTE];
   name: string;
+  tel: string;
+  zipCode: string;
+  address: string;
 }

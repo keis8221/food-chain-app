@@ -6,9 +6,13 @@
   import Textfield from "@smui/textfield";
   import HelperText from "@smui/textfield/helper-text";
   import Select, { Option } from "@smui/select";
+  import IconButton from "@smui/icon-button";
+  import CloseIcon from "../../components/icon/CloseIcon.svelte";
   import { addToast } from "../../stores/Toast";
-  import { isLogined } from "../../stores/Login";
+  import { isLoggedIn } from "../../stores/Login";
   import { AccountService } from "../../services/AccountService";
+  import { ShowableError } from "../../models/Error";
+  import { encodeFileToBase64 } from "../../utils/file";
 
   let email = "";
   let password = "";
@@ -31,12 +35,14 @@
     producer: "producer",
     consumer: "consumer",
     logistics: "logistics",
+    intermediary: "intermediary",
   } as const;
 
   const USER_ATTRIBUTE_LABEL = {
     producer: "生産者",
     consumer: "消費者",
     logistics: "物流業者",
+    intermediary: '引渡し業者',
   } as const;
 
   let attribute: typeof USER_ATTRIBUTE[keyof typeof USER_ATTRIBUTE] =
@@ -46,6 +52,32 @@
   let tel = "";
   let zipCode = "";
   let address = "";
+  let remarks = "";
+  let image = "";
+
+  const FILE_LIMIT_SIZE = 5 * 1024 * 1024;
+
+  async function onImgSelect(event: Event) {
+    if (event.target instanceof HTMLInputElement) {
+      const files = event.target.files;
+      if (files[0].size > FILE_LIMIT_SIZE) {
+        addToast({
+          message: "画像ファイルのサイズは5MB以下にしてください。",
+          type: "error",
+        });
+        return;
+      }
+      try {
+        image = await encodeFileToBase64(files[0]);
+      } catch {
+        throw new ShowableError("画像の読み込みに失敗しました。");
+      }
+    }
+  }
+
+  function onImgDelete() {
+    image = "";
+  }
 
   async function signup() {
     if (password !== password_confirm) {
@@ -64,6 +96,8 @@
           tel,
           zipCode,
           address,
+          remarks,
+          image
         })
         .then(() => {
           addToast({
@@ -82,13 +116,13 @@
   }
 
   onMount(() => {
-    if ($isLogined) {
+    if ($isLoggedIn) {
       $goto("/reservation");
     }
   });
 </script>
 
-{#if $isLogined}
+{#if $isLoggedIn}
   <div style="display: flex; justify-content: center">
     <CircularProgress style="height: 160px; width: 32px;" indeterminate />
   </div>
@@ -223,6 +257,58 @@
         >例）秋田県山本郡三種町下岩川長面台50</HelperText
       >
     </Textfield>
+
+    <div class="m-3">
+      <div class="label required input-title text-text-lightGray">備考</div>
+      <Textfield
+        class="w-[300px]"
+        bind:value={remarks}
+        textarea
+        input$maxlength={500}
+        input$placeholder={attribute === USER_ATTRIBUTE.intermediary ? "例）営業時間、定休日" : ""}
+      />
+    </div>
+
+    <div class="input-row m-3">
+      <div class="label required input-title text-text-lightGray">画像</div>
+      <div class="input-box">
+        <div
+          class="bg-white rounded-lg border-solid border-[1px] border-text-lightGray min-h-[200px] my-2 relative"
+        >
+          {#if !image}
+            <div class="mt-16">
+              <!-- <img class="mx-auto" src="/images/icons/upload.svg" alt="" /> -->
+              <p class="text-text-lightGray font-bold text-sm text-center mt-6">
+                画像ファイルをアップロード
+              </p>
+              <div class="text-center mt-2">
+                <label
+                  class="upload-button h-8 pt-2 px-3 mt-4 text-text-lightGray"
+                >
+                  ファイルを選択
+                  <input
+                    type="file"
+                    accept="image/*"
+                    class="hidden"
+                    on:change={onImgSelect}
+                  />
+                </label>
+              </div>
+            </div>
+          {:else}
+            <div class="mb-9">
+              <IconButton on:click={onImgDelete}>
+                <CloseIcon />
+              </IconButton>
+              <div class="grid justify-center">
+                <img class="px-10" src={image} alt="" width="360" height="360" />
+              </div>
+            </div>
+          {/if}
+        </div>
+        <div class="text-text-lightGray text-sm">最大アップロードサイズ:5MB</div>
+      </div>
+    </div>
 
     <div class="flex justify-center">
       <Button

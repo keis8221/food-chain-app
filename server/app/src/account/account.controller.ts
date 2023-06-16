@@ -38,4 +38,10 @@ export class AccountController {
   async signup(@Body() createAccountDto: CreateAccountDto) {
     return await this.accountService.signup(createAccountDto);
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('/shops')
+  async getShops() {
+    return await this.accountService.getShops();
+  }
 }

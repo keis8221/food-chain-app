@@ -1,7 +1,7 @@
 <script lang="ts">
   import TopAppBar, { Row, Section, Title } from "@smui/top-app-bar";
   import IconButton from "@smui/icon-button";
-  import { isLogined } from "../../stores/Login";
+  import { isLoggedIn } from "../../stores/Login";
 
   export let toggle: () => void;
 </script>
@@ -9,7 +9,7 @@
 <TopAppBar variant="short">
   <Row>
     <Section>
-      {#if $isLogined}
+      {#if $isLoggedIn}
         <IconButton class="material-icons" on:click={toggle}>menu</IconButton>
       {/if}
       <Title>BaBaCafeアプリ</Title>

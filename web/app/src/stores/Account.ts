@@ -1,17 +1,7 @@
-import { type Writable, writable } from "svelte/store";
+import { writable } from "svelte/store";
 
-const enum StorageKeys {
-  accountId = "accountId",
-}
+export const profile = writable(null);
 
-export const accountIdStore: Writable<string | null> = writable(
-  sessionStorage.getItem(StorageKeys.accountId)
-);
-
-accountIdStore.subscribe((accountId: string | null) => {
-  if (accountId === null) {
-    sessionStorage.removeItem(StorageKeys.accountId);
-  } else {
-    sessionStorage.setItem(StorageKeys.accountId, accountId);
-  }
-});
+export const setAccountProfile = (accountProfile) => {
+  profile.set(accountProfile);
+};

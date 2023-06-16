@@ -72,9 +72,9 @@
             "YYYY-MM-DD"
           )}
           <br />
-          受け取り場所：{reservationData.shop.name}
+          受け取り場所：{reservationData.receiveLocation.name}
           <br />
-          住所：{reservationData.shop.address}
+          住所：{reservationData.receiveLocation.address}
         </div>
       </div>
     </div>

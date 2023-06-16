@@ -6,7 +6,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, IsNull } from 'typeorm';
 import * as bcrypt from 'bcrypt';
-import { Account } from './entities/account.entity';
+import { Account, USER_ATTRIBUTE } from './entities/account.entity';
 import { CreateAccountDto } from './dto/create-account.dto';
 
 @Injectable()
@@ -35,5 +35,11 @@ export class AccountService {
       throw new InternalServerErrorException(e);
     }
     return;
+  }
+
+  async getShops(): Promise<Account[] | undefined> {
+    return await this.accountRepository.find({
+      where: { attribute: USER_ATTRIBUTE.intermediary, deletedAt: IsNull() },
+    });
   }
 }

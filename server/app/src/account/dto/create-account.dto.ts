@@ -4,6 +4,7 @@ import {
   IsNotEmpty,
   IsEmail,
   Matches,
+  IsOptional,
 } from 'class-validator';
 import {
   USER_CLASSIFICATION,
@@ -45,4 +46,12 @@ export class CreateAccountDto {
   @IsNotEmpty()
   @IsString()
   address: string;
+
+  @IsOptional()
+  @IsString()
+  remarks: string;
+
+  @IsOptional()
+  @IsString()
+  image: string;
 }

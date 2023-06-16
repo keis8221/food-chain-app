@@ -71,9 +71,9 @@
           <Row on:click={ $goto(`./${item}`)}>
             <Cell>{item.consumer?.name}</Cell>
             <Cell
-              >{dayjs(item.desiredAt).format("MM/DD hh:mm")}</Cell
+              >{dayjs(item.desiredAt).format("MM/DD HH:mm")}</Cell
             >
-            <Cell>{item.shop.name}</Cell>
+            <Cell>{item.receiveLocation.name}</Cell>
             <Cell>{item.product.name}</Cell>
             <Cell>{item.quantity}</Cell>
             <Cell>{statusToText[item.status]}</Cell>
