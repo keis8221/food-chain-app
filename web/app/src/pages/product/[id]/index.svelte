@@ -58,7 +58,11 @@
       <div class="flex">
         {#if product.producer.image}
           <div class="w-[90px] h-[90px] rounded-[50%]">
-            {product.producer.image}
+            <img
+              class="w-[90px] h-[90px] rounded-[50%]"
+              src={product.producer.image}
+              alt=""
+            />
           </div>
         {:else}
           <img

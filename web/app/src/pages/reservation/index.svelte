@@ -81,9 +81,9 @@
           <Row on:click={() => showDetail(item)}>
             <Cell>{item.consumer?.name}</Cell>
             <Cell
-              >{dayjs(item.desiredAt).format("MM/DD hh:mm")}</Cell
+              >{dayjs(item.desiredAt).format("MM/DD HH:mm")}</Cell
             >
-            <Cell>{item.shop.name}</Cell>
+            <Cell>{item.receiveLocation.name}</Cell>
             <Cell>{item.product.name}</Cell>
             <Cell>{item.quantity}</Cell>
             <Cell>{statusToText[item.status]}</Cell>
@@ -122,12 +122,12 @@
           予約者名：{dialogData.consumer?.name}
           <br />
           受け取り希望日時：{dayjs(dialogData.desiredAt).format(
-            "MM/DD hh:mm"
+            "MM/DD HH:mm"
           )}
           <br />
-          受け取り場所：{dialogData.shop.name}
+          受け取り場所：{dialogData.receiveLocation.name}
           <br />
-          住所：{dialogData.shop.address}
+          住所：{dialogData.receiveLocation.address}
         </div>
       </div>
     </Content>

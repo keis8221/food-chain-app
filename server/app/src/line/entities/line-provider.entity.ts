@@ -1,11 +1,9 @@
 import { BaseEntityAddHashId } from 'src/common/base-entity-add-hash-id';
-import { Shop } from 'src/shop/entities/shop.entity';
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
-  JoinColumn,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -38,9 +36,4 @@ export class LineProvider extends BaseEntityAddHashId {
 
   @OneToOne(() => LiffConfig, (liffConfig) => liffConfig.lineProvider)
   liffConfig: LiffConfig;
-
-  @OneToOne(() => Shop, (shop) => shop.lineProvider)
-  @JoinColumn()
-  shop: Shop;
-
 }

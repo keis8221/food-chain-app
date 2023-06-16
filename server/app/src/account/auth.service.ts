@@ -1,6 +1,6 @@
 import { JwtService } from '@nestjs/jwt';
 import { Injectable } from '@nestjs/common';
-import * as bcrypt from 'bcrypt'
+import * as bcrypt from 'bcrypt';
 import { AccountService } from 'src/account/account.service';
 import { Account } from 'src/account/entities/account.entity';
 import { JwtPayload } from './jwt-payload-interface';
@@ -15,7 +15,7 @@ export class AuthService {
   constructor(
     private jwtService: JwtService,
     private accountService: AccountService,
-  ) { }
+  ) {}
 
   // ユーザーを認証する
   async validateAccount(
@@ -42,7 +42,10 @@ export class AuthService {
       email: account.email,
       classification: account.classification,
       attribute: account.attribute,
-      name: account.name
+      name: account.name,
+      tel: account.tel,
+      zipCode: account.zipCode,
+      address: account.address,
     };
 
     return {
@@ -51,7 +54,10 @@ export class AuthService {
       email: payload.email,
       classification: payload.classification,
       attribute: payload.attribute,
-      name: payload.name
+      name: payload.name,
+      tel: payload.tel,
+      zipCode: payload.zipCode,
+      address: payload.address,
     };
   }
 }

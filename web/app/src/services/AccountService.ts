@@ -18,7 +18,9 @@ export class AccountService {
     } catch (err) {
       switch (err.message) {
         case "Unauthorized":
-          throw new ShowableError("メールアドレスまたはパスワードに誤りがあります。");
+          throw new ShowableError(
+            "メールアドレスまたはパスワードに誤りがあります。"
+          );
         default:
           throw new ShowableError(
             "エラーが発生しました。時間をおいて再読み込みしてください。"
@@ -50,7 +52,7 @@ export class AccountService {
       return await baseAPI<Record<string, string>>({
         endpoint: "account/signup",
         method: "POST",
-        body
+        body,
       });
     } catch (err) {
       switch (err.error || err.message) {
@@ -58,6 +60,26 @@ export class AccountService {
           throw new ShowableError("入力項目に誤りがあります。");
         case "Conflict":
           throw new ShowableError("すでにアカウントが存在しています。");
+        default:
+          throw new ShowableError(
+            "エラーが発生しました。時間をおいて再読み込みしてください。"
+          );
+      }
+    }
+  }
+
+  async getShops(): Promise<Record<string, string>[]> {
+    try {
+      return await baseAPI<Record<string, string>[]>({
+        endpoint: "account/shops",
+        method: "GET",
+      });
+    } catch (err) {
+      switch (err.error || err.message) {
+        case "Unauthorized":
+          throw new ShowableError(
+            "認証が切れました。再度ログインしてください。"
+          );
         default:
           throw new ShowableError(
             "エラーが発生しました。時間をおいて再読み込みしてください。"
