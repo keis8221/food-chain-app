@@ -61,6 +61,12 @@
   DESIRE_DEFAULT_DATE_TIME.setHours(0);
   DESIRE_DEFAULT_DATE_TIME.setMinutes(0);
 
+  const showPicker = (e: Event) => {
+    if ((e.target instanceof HTMLInputElement)) {
+      e.target.showPicker()
+    }
+  }
+
   // フォームの項目
   let quantity = 1;
   let desiredAt = DESIRE_DEFAULT_DATE_TIME.toISOString().slice(0, 16);
@@ -170,6 +176,7 @@
           required
           input$min={new Date(selectedProduct.startAt).toISOString().slice(0, 16)}
           input$max={new Date(selectedProduct.endAt).toISOString().slice(0, 16)}
+          on:click={showPicker}
         />
       </div>
 
