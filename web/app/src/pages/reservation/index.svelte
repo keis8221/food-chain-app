@@ -55,6 +55,7 @@
   <div class="m-6">
     <h2 class="text-2xl font-bold">予約一覧</h2>
 
+    <!--改修ポイント-->
     <DataTable class="mt-10" table$aria-label="User list" style="width: 100%">
       <Head>
         <Row>
