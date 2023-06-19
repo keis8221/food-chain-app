@@ -37,6 +37,12 @@
   END_AT_MAX_DATE_TIME.setHours(0);
   END_AT_MAX_DATE_TIME.setMinutes(0);
 
+  const showPicker = (e: Event) => {
+    if ((e.target instanceof HTMLInputElement)) {
+      e.target.showPicker()
+    }
+  }
+
   const FILE_LIMIT_SIZE = 5 * 1024 * 1024;
 
   export let onConfirm: (values: Required<TProductForm>) => unknown;
@@ -164,7 +170,8 @@
         required
         input$min={START_AT_MIN_DATE_TIME.toISOString().slice(0, 16)}
         input$max={START_AT_MAX_DATE_TIME.toISOString().slice(0, 16)}
-      />
+        on:click={showPicker}
+        />
       <span class="ml-3 mr-3 label text-text-lightGray">～</span>
       <Textfield
         class="m-3 w-[150px]"
@@ -175,7 +182,8 @@
         required
         input$min={END_AT_MIN_DATE_TIME.toISOString().slice(0, 16)}
         input$max={END_AT_MAX_DATE_TIME.toISOString().slice(0, 16)}
-      />
+        on:click={showPicker}
+        />
     </div>
 
     <div class="m-3">

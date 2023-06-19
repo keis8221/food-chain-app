@@ -10,13 +10,13 @@
   import { onMount } from "svelte";
   import dayjs from "dayjs";
   import { addToast } from "../../../stores/Toast";
-    import { ShopRepository, type TShop } from "../../../models/Shop";
+  import { AccountService } from "../../../services/AccountService";
   import { markAsLogoutState } from "../../../stores/Login";
   import { CROP_UNITS_LABEL } from "../../../constants/product";
 
   export let onConfirm: (values: Required<TReservationForm>) => unknown;
 
-  let shops: TShop[];
+  let shops: Record<string, string>[] | undefined = [];
   let shopIds: Record<string, string> | undefined = undefined;
   let selectedProduct: TProduct;
   let totalPrice = 0;
@@ -25,7 +25,7 @@
     try {
       [selectedProduct, shops] = await Promise.all([
         new ProductRepository().findOne($params.productId),
-        new ShopRepository().getShops(),
+        new AccountService().getShops(),
       ]);
       shopIds = Object.fromEntries(shops.map(({ id, name }) => [id, name]));
 
@@ -54,6 +54,12 @@
   const DESIRE_DEFAULT_DATE_TIME = new Date();
   DESIRE_DEFAULT_DATE_TIME.setHours(0);
   DESIRE_DEFAULT_DATE_TIME.setMinutes(0);
+
+  const showPicker = (e: Event) => {
+    if ((e.target instanceof HTMLInputElement)) {
+      e.target.showPicker()
+    }
+  }
 
   // フォームの項目
   let quantity = 1;
@@ -92,7 +98,11 @@
       <div class="flex">
         {#if selectedProduct.producer.image}
           <div class="w-[45px] h-[45px] rounded-[50%]">
-            {selectedProduct.producer.image}
+            <img
+            class="w-[45px] h-[45px] rounded-[50%]"
+            src={selectedProduct.producer.image}
+            alt=""
+          />
           </div>
         {:else}
           <img
@@ -127,9 +137,9 @@
         <div class="text-center text-base text-[#5A5A5A] mt-2">残りあと{selectedProduct.remaining}点</div>
         <div class="text-center text-base text-[#5A5A5A] mt-2">
           予約期間：
-          {dayjs(selectedProduct.startAt).format("MM/DD hh:mm")}
+          {dayjs(selectedProduct.startAt).format("MM/DD HH:mm")}
           -
-          {dayjs(selectedProduct.endAt).format("MM/DD hh:mm")}
+          {dayjs(selectedProduct.endAt).format("MM/DD HH:mm")}
         </div>
       </Paper>
     </div>
@@ -160,6 +170,7 @@
           required
           input$min={new Date(selectedProduct.startAt).toISOString().slice(0, 16)}
           input$max={new Date(selectedProduct.endAt).toISOString().slice(0, 16)}
+          on:click={showPicker}
         />
       </div>
 

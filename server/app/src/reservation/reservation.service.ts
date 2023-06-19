@@ -45,12 +45,28 @@ export class ReservationService {
         ...where,
         consumerId: account.id,
       };
+    } else if (account.attribute === USER_ATTRIBUTE.logistics) {
+      where = {
+        ...where,
+        shipperId: account.id,
+      };
+    } else if (account.attribute === USER_ATTRIBUTE.intermediary) {
+      where = {
+        ...where,
+        receiveLocationId: account.id,
+      };
     }
 
     return await this.reservationRepository
       .find({
         where,
-        relations: { consumer: true, product: true, shipper: true, shop: true },
+        relations: [
+          'consumer',
+          'product',
+          'product.producer',
+          'shipper',
+          'receiveLocation',
+        ],
         order: { createdAt: 'DESC' },
       })
       .then((reservation) =>
@@ -62,7 +78,13 @@ export class ReservationService {
     return await this.reservationRepository
       .findOne({
         where: { id },
-        relations: { consumer: true, product: true, shipper: true, shop: true },
+        relations: [
+          'consumer',
+          'product',
+          'product.producer',
+          'shipper',
+          'receiveLocation',
+        ],
       })
       .then((reservation) => reservation.convertTReservation());
   }

@@ -2,7 +2,7 @@
   import Drawer, { Content } from "@smui/drawer";
   import List, { Item, Text, Separator } from "@smui/list";
   import { goto } from "@roxi/routify";
-  import { isLogined, markAsLogoutState } from "../../stores/Login";
+  import { isLoggedIn, markAsLogoutState } from "../../stores/Login";
   import { addToast } from "../../stores/Toast";
 
   export let isOpen: boolean;
@@ -27,7 +27,7 @@
     $goto("/login");
   }
 
-  isLogined.subscribe((value) => {
+  isLoggedIn.subscribe((value) => {
     if (!value) {
       active = DEFAULT_ACTIVE;
       close();

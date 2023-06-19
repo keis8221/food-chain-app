@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Request, Body, HttpCode, HttpStatus, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Request,
+  Body,
+  HttpCode,
+  HttpStatus,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthService, PasswordOmitAccount } from './auth.service';
 import { AccountService } from './account.service';
 import { LocalAuthGuard } from './local-auth.guard';
@@ -9,8 +18,8 @@ import { CreateAccountDto } from './dto/create-account.dto';
 export class AccountController {
   constructor(
     private readonly authService: AuthService,
-    private readonly accountService: AccountService
-  ) { }
+    private readonly accountService: AccountService,
+  ) {}
 
   @UseGuards(LocalAuthGuard)
   @Post('/login')
@@ -26,9 +35,13 @@ export class AccountController {
 
   @Post('/signup')
   @HttpCode(HttpStatus.CREATED)
-  async signup(
-    @Body() createAccountDto: CreateAccountDto
-  ) {
+  async signup(@Body() createAccountDto: CreateAccountDto) {
     return await this.accountService.signup(createAccountDto);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('/shops')
+  async getShops() {
+    return await this.accountService.getShops();
   }
 }

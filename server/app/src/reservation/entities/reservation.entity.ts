@@ -1,5 +1,4 @@
 import { Product } from 'src/product/entities/product.entity';
-import { Shop } from 'src/shop/entities/shop.entity';
 import { Account } from 'src/account/entities/account.entity';
 import {
   Column,
@@ -121,9 +120,9 @@ export class Reservation extends BaseEntity {
   @JoinColumn({ name: 'product_id', referencedColumnName: 'id' })
   product: Product;
 
-  @ManyToOne(() => Shop, (shop) => shop.reservations)
+  @ManyToOne(() => Account, (account) => account.reservations)
   @JoinColumn({ name: 'receive_location_id', referencedColumnName: 'id' })
-  shop: Shop;
+  receiveLocation: Account;
 
   @ManyToOne(() => Account, (account) => account.reservations)
   @JoinColumn({ name: 'shipper_id', referencedColumnName: 'id' })
@@ -134,7 +133,7 @@ export class Reservation extends BaseEntity {
       ...this,
       consumer: this.consumer,
       product: this.product,
-      shop: this.shop,
+      receiveLocation: this.receiveLocation,
       shipper: this.shipper,
     };
   }
@@ -161,6 +160,6 @@ export type TReservation = Pick<
   id: string;
   consumer: Account;
   product: Product;
-  shop: Shop;
+  receiveLocation: Account;
   shipper: Account;
 };

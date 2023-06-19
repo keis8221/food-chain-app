@@ -29,6 +29,9 @@ export class JwtStrategy extends PassportStrategy(BaseJwtStrategy) {
       classification: payload.classification,
       attribute: payload.attribute,
       name: payload.name,
+      tel: payload.tel,
+      zipCode: payload.zipCode,
+      address: payload.address,
     };
   }
 }

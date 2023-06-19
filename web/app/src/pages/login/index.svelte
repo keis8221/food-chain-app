@@ -5,9 +5,9 @@
   import Textfield from "@smui/textfield";
   import { AccountService } from "../../services/AccountService";
   import { goto } from "@roxi/routify";
-  import { accountIdStore } from "../../stores/Account";
+  import { setAccountProfile } from "../../stores/Account";
   import { addToast } from "../../stores/Toast";
-  import { isLogined, markAsLoginState } from "../../stores/Login";
+  import { isLoggedIn, markAsLoginState } from "../../stores/Login";
 
   let email = "";
   let password = "";
@@ -16,8 +16,9 @@
     await new AccountService()
       .login(email, password)
       .then((res) => {
-        localStorage.setItem("accessToken", res.access_token);
-        $accountIdStore = res.id;
+        const {access_token, ...profile} = res;
+        localStorage.setItem("accessToken", access_token);
+        setAccountProfile(profile);
         $goto("/reservation");
         markAsLoginState();
         addToast({
@@ -34,13 +35,13 @@
   }
 
   onMount(() => {
-    if ($isLogined) {
+    if ($isLoggedIn) {
       $goto("/reservation");
     }
   });
 </script>
 
-{#if $isLogined}
+{#if $isLoggedIn}
   <div style="display: flex; justify-content: center">
     <CircularProgress style="height: 160px; width: 32px;" indeterminate />
   </div>
