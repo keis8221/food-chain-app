@@ -11,6 +11,7 @@
   import dayjs from "dayjs";
   import { markAsLogoutState } from "../../stores/Login";
   import { profile } from "../../stores/Account";
+  import { ATTRIBUTE } from "../../constants/account";
 
   $: reservationRepository = new ReservationRepository();
 
@@ -51,37 +52,41 @@
     <DataTable class="mt-10" table$aria-label="User list" style="width: 100%">
       <Head>
         <Row>
-          {#if $profile.attribute != 'producer'}
-            <Cell>生産者名</Cell>
+          {#if $profile.attribute != ATTRIBUTE.PRODUCER}
+            <Cell style="text-align: center;">生産者名</Cell>
           {/if}
-          <Cell>作物名</Cell>
-          <Cell>予約数量</Cell>
-          <Cell>合計金額</Cell>
-          {#if $profile.attribute != 'consumer'}
-            <Cell>予約者名</Cell>
+          <Cell style="text-align: center;">作物名</Cell>
+          <Cell style="text-align: center;">予約数量</Cell>
+          <Cell style="text-align: center;">合計金額</Cell>
+          {#if $profile.attribute != ATTRIBUTE.CONSUMER}
+            <Cell style="text-align: center;">予約者名</Cell>
           {/if}
-          <Cell>受取り希望日</Cell>
-          <Cell>受取り場所</Cell>
-          <Cell>配送者</Cell>
-          <Cell>ステータス</Cell>
+          <Cell style="text-align: center;">受取り希望日</Cell>
+          <Cell style="text-align: center;">受取り場所</Cell>
+          <Cell style="text-align: center;">配送者</Cell>
+          <Cell style="text-align: center;">ステータス</Cell>
         </Row>
       </Head>
       {#each items as item (item.id)}
         <Body class="cell">
-          <Row on:click={ $goto(`./${item}`)}>
-            {#if $profile.attribute != 'producer'}
-              <Cell>{item.product.producer.name}</Cell>
+          <Row on:click={$goto(`./${item}`)}>
+            {#if $profile.attribute != ATTRIBUTE.PRODUCER}
+              <Cell style="text-align: center;"
+                >{item.product.producer.name}</Cell
+              >
             {/if}
-            <Cell>{item.product.name}</Cell>
-            <Cell>{item.quantity}</Cell>
-            <Cell>{item.totalPrice}</Cell>
-            {#if $profile.attribute != 'consumer'}
-              <Cell>{item.consumer?.name}</Cell>
+            <Cell style="text-align: center;">{item.product.name}</Cell>
+            <Cell style="text-align: center;">{item.quantity}</Cell>
+            <Cell style="text-align: center;">{item.totalPrice}円</Cell>
+            {#if $profile.attribute != ATTRIBUTE.CONSUMER}
+              <Cell style="text-align: center;">{item.consumer.name}</Cell>
             {/if}
-            <Cell>{dayjs(item.desiredAt).format("MM/DD HH:mm")}</Cell>
-            <Cell>{item.receiveLocation.name}</Cell>
-            <Cell>{item.shipper?.name}</Cell>
-            <Cell>{statusToText[item.status]}</Cell>
+            <Cell style="text-align: center;"
+              >{dayjs(item.desiredAt).format("YYYY/MM/DD")}</Cell
+            >
+            <Cell style="text-align: center;">{item.receiveLocation.name}</Cell>
+            <Cell style="text-align: center;">{item.shipper?.name ?? ""}</Cell>
+            <Cell style="text-align: center;">{statusToText[item.status]}</Cell>
           </Row>
         </Body>
       {/each}
