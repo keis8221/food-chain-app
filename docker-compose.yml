@@ -9,6 +9,8 @@ services:
       - "80:80"
     networks:
       - web
+    depends_on:
+      - backend
 
   backend:
     build: server/app
@@ -18,6 +20,7 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
+      JWT_SECRET_KEY: secret
       TZ: ${TZ}
     networks:
       - web
