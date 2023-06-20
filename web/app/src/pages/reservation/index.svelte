@@ -9,12 +9,8 @@
   import { addToast } from "../../stores/Toast";
   import CircularProgress from "@smui/circular-progress";
   import dayjs from "dayjs";
-  import { onMount } from "svelte";
-  import { AccountService } from "../../services/AccountService";
   import { markAsLogoutState } from "../../stores/Login";
   import { profile } from "../../stores/Account";
-
-  let currentAccount: Record<string, string>;
 
   $: reservationRepository = new ReservationRepository();
 
@@ -42,10 +38,6 @@
       return [];
     }
   }
-
-  onMount(async () => {
-    currentAccount = await new AccountService().getProfile();
-  });
 </script>
 
 {#await fetchReservationProducts()}
@@ -56,18 +48,17 @@
   <div class="m-6">
     <h2 class="text-2xl font-bold">予約一覧</h2>
 
-    <!--改修ポイント-->
     <DataTable class="mt-10" table$aria-label="User list" style="width: 100%">
       <Head>
         <Row>
           {#if $profile.attribute != 'producer'}
-          <Cell>生産者名</Cell>     <!--生産者属性のユーザーの場合表示しない-->
+            <Cell>生産者名</Cell>
           {/if}
           <Cell>作物名</Cell>
           <Cell>予約数量</Cell>
           <Cell>合計金額</Cell>
           {#if $profile.attribute != 'consumer'}
-          <Cell>予約者名</Cell>     <!--消費者属性のユーザーの場合表示しない-->
+            <Cell>予約者名</Cell>
           {/if}
           <Cell>受取り希望日</Cell>
           <Cell>受取り場所</Cell>
@@ -79,17 +70,15 @@
         <Body class="cell">
           <Row on:click={ $goto(`./${item}`)}>
             {#if $profile.attribute != 'producer'}
-            <Cell>{item.product.producer.name}</Cell>
+              <Cell>{item.product.producer.name}</Cell>
             {/if}
             <Cell>{item.product.name}</Cell>
             <Cell>{item.quantity}</Cell>
             <Cell>{item.totalPrice}</Cell>
             {#if $profile.attribute != 'consumer'}
-            <Cell>{item.consumer?.name}</Cell>
+              <Cell>{item.consumer?.name}</Cell>
             {/if}
-            <Cell
-              >{dayjs(item.desiredAt).format("MM/DD HH:mm")}</Cell
-            >
+            <Cell>{dayjs(item.desiredAt).format("MM/DD HH:mm")}</Cell>
             <Cell>{item.receiveLocation.name}</Cell>
             <Cell>{item.shipper?.name}</Cell>
             <Cell>{statusToText[item.status]}</Cell>
