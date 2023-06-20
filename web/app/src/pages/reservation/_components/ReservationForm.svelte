@@ -13,7 +13,6 @@
   import { AccountService } from "../../../services/AccountService";
   import { markAsLogoutState } from "../../../stores/Login";
   import { CROP_UNITS_LABEL } from "../../../constants/product";
-  import { profile } from "../../../stores/Account";
 
   export let onConfirm: (values: Required<TReservationForm>) => unknown;
 
@@ -28,12 +27,7 @@
         new ProductRepository().findOne($params.productId),
         new AccountService().getShops(),
       ]);
-      if ($profile.classification === 'individual') {
-        shopIds = Object.fromEntries(shops.map(({ id, name }) => [id, name]));
-      } else {
-        shops = [$profile];
-        shopIds = { [$profile.id]: $profile.name };
-      }
+      shopIds = Object.fromEntries(shops.map(({ id, name }) => [id, name]));
 
       totalPrice = selectedProduct.unitPrice;
     } catch (err) {
