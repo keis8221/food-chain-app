@@ -7,6 +7,7 @@
   import { addToast } from "../../stores/Toast";
   import { markAsLogoutState } from "../../stores/Login";
   import { CROP_UNITS_LABEL } from "../../constants/product";
+  import dayjs from "dayjs";
 
   $: productRepository = new ProductRepository();
 
@@ -54,21 +55,21 @@
       </Button>
     </div>
 
-    <div class="card-display">
+    <div class="card-display"style="width:100%">
       {#each products as product}
         <div class="card-container">
           <Card class="rounded-[24px]">
-            <Content class="mdc-typography--body2 relative">
+            <Content class="mdc-typography--body2 relative" style="top:10px">
               <div class="">
                 {#if product.producer.image}
                   <img
-                    class="absolute top-[-12%] w-[40px] h-[40px] rounded-[50%]"
+                    class="absolute top-[-12%] w-[30px] h-[30px] rounded-[50%]"
                     src={product.producer.image}
                     alt=""
                   />
                 {:else}
                   <img
-                    class="absolute top-[-12%] w-[40px] h-[40px] rounded-[50%]"
+                    class="absolute top-[-12%] w-[30px] h-[30px] rounded-[50%]"
                     src="./../../../public/images/farmer.png"
                     alt=""
                   />
@@ -99,12 +100,19 @@
               <Content class="mdc-typography--body2 relative">
                 <div class="price-block">
                   <div class="text-lg text-[#4A4A4A] mt-1">
-                    {product.unitQuantity}{CROP_UNITS_LABEL[product.unit]}あたり
+                    {product.unitQuantity}{CROP_UNITS_LABEL[product.unit]}
                   </div>
+                  <div>&nbsp;&nbsp;&nbsp;</div>
                   <div class="text-2xl text-[#4A4A4A]">
                     {product.unitPrice}
                   </div>
                   <div class="text-[#4A4A4A] mt-1.5">円</div>
+                </div>
+                <div class="text-lg text-[#4A4A4A] mt-1" style="float:left">
+                  予約期間：
+                <div style="float:right">{dayjs(product.startAt).format("MM/DD")}</div>
+                <div style="float:right">〜</div>
+                <div style="float:right">{dayjs(product.endAt).format("MM/DD")}</div>
                 </div>
               </Content>
             </PrimaryAction>
