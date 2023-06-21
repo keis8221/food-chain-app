@@ -4,16 +4,11 @@
   import {
     ReservationRepository,
     statusToText,
-    type TReservation,
   } from "../../models/Reservation";
   import { addToast } from "../../stores/Toast";
   import CircularProgress from "@smui/circular-progress";
   import dayjs from "dayjs";
-  import { onMount } from "svelte";
-  import { AccountService } from "../../services/AccountService";
   import { markAsLogoutState } from "../../stores/Login";
-
-  let currentAccount: Record<string, string>;
 
   $: reservationRepository = new ReservationRepository();
 
@@ -41,10 +36,6 @@
       return [];
     }
   }
-
-  onMount(async () => {
-    currentAccount = await new AccountService().getProfile();
-  });
 </script>
 
 {#await fetchReservationProducts()}

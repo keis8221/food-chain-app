@@ -10,5 +10,5 @@ module.exports = {
   hashScroll: true,
   childProcess: "dev:vite-docker",
   extensions: ["html", "svelte", "md", "svx"],
-  started: "2023-06-16T07:10:58.366Z",
+  started: "2023-06-21T05:15:48.966Z",
 };
