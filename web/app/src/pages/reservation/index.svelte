@@ -53,13 +53,13 @@
       <Head>
         <Row>
           {#if $profile.attribute != ATTRIBUTE.PRODUCER}
-            <Cell style="text-align: center;">生産者名</Cell>
+            <Cell style="text-align: center;">生産者</Cell>
           {/if}
           <Cell style="text-align: center;">作物名</Cell>
-          <Cell style="text-align: center;">予約数量</Cell>
+          <Cell style="text-align: center;">数量</Cell>
           <Cell style="text-align: center;">合計金額</Cell>
           {#if $profile.attribute != ATTRIBUTE.CONSUMER}
-            <Cell style="text-align: center;">予約者名</Cell>
+            <Cell style="text-align: center;">予約者</Cell>
           {/if}
           <Cell style="text-align: center;">受取り希望日</Cell>
           <Cell style="text-align: center;">受取り場所</Cell>
