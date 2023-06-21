@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import Sidebar from "../organizms/Sidebar.svelte";
   import Header from "../organizms/Header.svelte";
   import AuthGuard from "../wrappers/AuthGuard.svelte";
@@ -8,8 +8,8 @@
   let isOpen = false;
   const toggle = () => (isOpen = !isOpen);
   const close = () => (isOpen = false);
-  const handleWindowKeyDown = (event) => {
-    if (isOpen && event.key === 'Escape') {
+  const handleWindowKeyDown = (event: Event) => {
+    if (isOpen && (event instanceof KeyboardEvent) && (event as KeyboardEvent).key === 'Escape') {
       close();
     }
   }

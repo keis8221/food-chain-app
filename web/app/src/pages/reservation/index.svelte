@@ -4,7 +4,7 @@
   import {
     ReservationRepository,
     statusToText,
-    type TReservationProduct,
+    type TReservation,
   } from "../../models/Reservation";
   import { addToast } from "../../stores/Toast";
   import CircularProgress from "@smui/circular-progress";
@@ -17,14 +17,14 @@
   import { markAsLogoutState } from "../../stores/Login";
 
   let open = false;
-  let dialogData: TReservationProduct;
+  let dialogData: TReservation;
   let currentAccount: Record<string, string>;
 
   $: reservationRepository = new ReservationRepository();
 
   async function fetchReservationProducts() {
     try {
-      return await reservationRepository.allReservationProducts();
+      return await reservationRepository.allReservations();
     } catch (err) {
       switch (err.error || err.message) {
         case "Unauthorized":
@@ -47,8 +47,8 @@
     }
   }
 
-  function showDetail(reservationProduct: TReservationProduct) {
-    dialogData = reservationProduct;
+  function showDetail(reservation: TReservation) {
+    dialogData = reservation;
     open = true;
   }
 
@@ -79,14 +79,14 @@
       {#each items as item (item.id)}
         <Body class="cell">
           <Row on:click={() => showDetail(item)}>
-            <Cell>{item.reservation.user?.name}</Cell>
+            <Cell>{item.consumer?.name}</Cell>
             <Cell
-              >{dayjs(item.reservation.shippingDate).format("YYYY-MM-DD")}</Cell
+              >{dayjs(item.desiredAt).format("MM/DD HH:mm")}</Cell
             >
-            <Cell>{item.reservation.shop?.name}</Cell>
+            <Cell>{item.receiveLocation.name}</Cell>
             <Cell>{item.product.name}</Cell>
             <Cell>{item.quantity}</Cell>
-            <Cell>{statusToText[item.reservation.status]}</Cell>
+            <Cell>{statusToText[item.status]}</Cell>
           </Row>
         </Body>
       {/each}
@@ -99,7 +99,7 @@
     <div class="mt-3 flex justify-between">
       <h2 class="m-4 text-2xl font-bold">予約詳細</h2>
       <div class="m-2 mr-4">
-        <StatusLabel status={dialogData.reservation.status} />
+        <StatusLabel status={dialogData.status} />
       </div>
     </div>
     <Content>
@@ -119,15 +119,15 @@
       />
       <div class="mt-4">
         <div class="text-lg font-bold">
-          予約者名：{dialogData.reservation.user?.name}
+          予約者名：{dialogData.consumer?.name}
           <br />
-          受け取り希望日時：{dayjs(dialogData.reservation.shippingDate).format(
-            "YYYY-MM-DD"
+          受け取り希望日時：{dayjs(dialogData.desiredAt).format(
+            "MM/DD HH:mm"
           )}
           <br />
-          受け取り場所：{dialogData.reservation.shop.name}
+          受け取り場所：{dialogData.receiveLocation.name}
           <br />
-          住所：{dialogData.reservation.shop.address}
+          住所：{dialogData.receiveLocation.address}
         </div>
       </div>
     </Content>

@@ -20,6 +20,7 @@ export const USER_ATTRIBUTE = {
   producer: 'producer',
   consumer: 'consumer',
   logistics: 'logistics',
+  intermediary: 'intermediary',
 } as const;
 
 @Entity()
@@ -36,7 +37,7 @@ export class Account extends BaseEntity {
   @Column({ comment: '区分', type: 'varchar', length: 10 })
   classification!: typeof USER_CLASSIFICATION[keyof typeof USER_CLASSIFICATION];
 
-  @Column({ comment: '属性', type: 'varchar', length: 10 })
+  @Column({ comment: '属性', type: 'varchar', length: 20 })
   attribute!: typeof USER_ATTRIBUTE[keyof typeof USER_ATTRIBUTE];
 
   @Column({ comment: '名前', type: 'varchar', length: 30 })
@@ -50,6 +51,17 @@ export class Account extends BaseEntity {
 
   @Column({ comment: '住所', type: 'varchar', length: 100 })
   address!: string;
+
+  @Column({ comment: '自己紹介', type: 'text', default: '' })
+  remarks?: string;
+
+  @Column({
+    comment: 'ユーザー画像',
+    type: 'text',
+    default: null,
+    nullable: true,
+  })
+  image?: string;
 
   @CreateDateColumn({
     comment: '作成日時',
@@ -75,6 +87,6 @@ export class Account extends BaseEntity {
   @OneToMany(() => Product, (product) => product.producer)
   products: Product[];
 
-  @OneToMany(() => Reservation, (reservation) => reservation.user)
+  @OneToMany(() => Reservation, (reservation) => reservation.consumer)
   reservations: Reservation[];
 }

@@ -2,6 +2,7 @@
   import { AccountService } from "../../services/AccountService";
   import type { GotoHelper, IsActiveHelper } from "@roxi/routify";
   import { markAsLoginState, markAsLogoutState } from "../../stores/Login";
+  import { setAccountProfile } from "../../stores/Account";
 
   export async function canEnterPage(
     redirect: GotoHelper,
@@ -22,6 +23,8 @@
       const currentAccount = await new AccountService().getProfile();
 
       if (!currentAccount) return _redirect("/login");
+
+      setAccountProfile(currentAccount);
 
       return true;
     } catch (err) {

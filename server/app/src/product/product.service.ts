@@ -69,6 +69,5 @@ export class ProductService {
     product.image = dto.image || null;
     product.quantity = dto.quantity;
     product.remaining = dto.quantity;
-    await product.save();
   }
 }

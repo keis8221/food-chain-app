@@ -1,4 +1,4 @@
-import { ReservationProducts } from 'src/reservation/entities/reservation.entity';
+import { Reservation } from 'src/reservation/entities/reservation.entity';
 import { Account } from 'src/account/entities/account.entity';
 import {
   BaseEntity,
@@ -39,7 +39,7 @@ export class Product extends BaseEntity {
   @PrimaryGeneratedColumn('uuid', { comment: '出品ID' })
   readonly id!: string;
 
-  @Column({ comment: '生産者ID', type: 'uuid' })
+  @Column({ comment: '生産者ID', type: 'uuid', name: 'producer_id' })
   producerId: string;
 
   @Column({ comment: '作物名', type: 'varchar', length: 30 })
@@ -51,18 +51,10 @@ export class Product extends BaseEntity {
   @Column({ comment: '説明', type: 'text', default: '' })
   description?: string;
 
-  @CreateDateColumn({
-    comment: '予約開始',
-    type: 'timestamptz',
-    name: 'start_at',
-  })
+  @Column({ comment: '予約開始', type: 'timestamptz', name: 'start_at' })
   startAt!: Date;
 
-  @CreateDateColumn({
-    comment: '予約終了',
-    type: 'timestamptz',
-    name: 'end_at',
-  })
+  @Column({ comment: '予約終了', type: 'timestamptz', name: 'end_at' })
   endAt!: Date;
 
   @Column({ comment: '単位', type: 'varchar', length: 10 })
@@ -109,22 +101,19 @@ export class Product extends BaseEntity {
   })
   readonly deletedAt?: Date;
 
-  @OneToMany(
-    () => ReservationProducts,
-    (reservationProducts) => reservationProducts.product,
-  )
-  @JoinColumn()
-  reservationProducts: ReservationProducts[];
-
   @ManyToOne(() => Account, (account) => account.products)
-  @JoinColumn({ name: 'producerId', referencedColumnName: 'id' })
+  @JoinColumn({ name: 'producer_id', referencedColumnName: 'id' })
   producer: Account;
+
+  @OneToMany(() => Reservation, (reservation) => reservation.product)
+  reservations: Reservation[];
 
   convertTProduct(): TProduct {
     return {
       ...this,
       image: this.image,
       producer: this.producer,
+      reservations: this.reservations,
     };
   }
 }
@@ -149,5 +138,5 @@ export type TProduct = Pick<
 > & {
   id: string;
   producer: Account;
-  reservationProducts: ReservationProducts[];
+  reservations: Reservation[];
 };

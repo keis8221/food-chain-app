@@ -1,8 +1,17 @@
-import { IsString, IsEnum, IsNotEmpty, IsEmail, Matches } from 'class-validator';
-import { USER_CLASSIFICATION, USER_ATTRIBUTE } from '../entities/account.entity';
+import {
+  IsString,
+  IsEnum,
+  IsNotEmpty,
+  IsEmail,
+  Matches,
+  IsOptional,
+} from 'class-validator';
+import {
+  USER_CLASSIFICATION,
+  USER_ATTRIBUTE,
+} from '../entities/account.entity';
 
 export class CreateAccountDto {
-
   @IsNotEmpty()
   @IsString()
   @IsEmail()
@@ -26,16 +35,23 @@ export class CreateAccountDto {
 
   @IsNotEmpty()
   @IsString()
-  @Matches("\\d{2,4}-\\d{2,4}-\\d{3,4}")
+  @Matches('\\d{2,4}-\\d{2,4}-\\d{3,4}')
   tel: string;
 
   @IsNotEmpty()
   @IsString()
-  @Matches("^\\d{3}-\\d{4}$")
+  @Matches('^\\d{3}-\\d{4}$')
   zipCode: string;
 
   @IsNotEmpty()
   @IsString()
   address: string;
 
+  @IsOptional()
+  @IsString()
+  remarks: string;
+
+  @IsOptional()
+  @IsString()
+  image: string;
 }
