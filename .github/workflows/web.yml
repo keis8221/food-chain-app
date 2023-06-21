@@ -30,7 +30,6 @@ jobs:
         with:
           node-version: 16
       - run: yarn install
-      - run: yarn prepare
       - run: yarn lint
 
   build:
