@@ -13,7 +13,7 @@
     "check": "svelte-check --tsconfig ./tsconfig.json",
     "lint": "eslint \"{src,apps,libs,test}/**/*{.ts,.svelte}\" --fix",
     "format": "prettier --write \"src/**/*.ts\"",
-    "prepare": "npm run smui-theme-prepare",
+    "prepare": "npm run smui-theme-prepare && routify -b",
     "smui-theme-prepare": "smui-theme compile public/smui.css -i src/theme",
     "smui-theme-build": "smui-theme compile dist/smui.css -i src/theme"
   },

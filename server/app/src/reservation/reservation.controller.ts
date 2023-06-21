@@ -11,7 +11,7 @@ import {
 import { GetAccount } from 'src/account/get-account.decorator';
 import { JwtAuthGuard } from 'src/account/jwt-auth.guard';
 import { CreateReservationDto } from './dto/create-reservation.dto';
-import { Reservation, TReservation } from './entities/reservation.entity';
+import { TReservation } from './entities/reservation.entity';
 import { ReservationService } from './reservation.service';
 import { Account } from 'src/account/entities/account.entity';
 
@@ -27,10 +27,6 @@ export class ReservationController {
     return this.reservationService.getReservations(account);
   }
 
-  // @Get('/products/:reservationId')
-  // async getReservation(reservation: Reservation): Promise<TReservation> {
-  //   return this.reservationService.getReservation(reservation.id);
-  // }
   @Get('/products/:reservationId')
   async getReservation(@Param('id') id: string): Promise<TReservation> {
     return await this.reservationService.getReservation(id);
