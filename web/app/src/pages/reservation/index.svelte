@@ -157,17 +157,17 @@
    * 表の1行分の情報を取得する.
    *
    * @param {TReservation} item - 1行分の予約情報
-   * @param {Array<Object>} colomns - 表の要素群
+   * @param {Array<Object>} columns - 表の要素群(列の情報として扱う)
    * @return {Array<any>} 表の1行分の情報
    */
-  function getTableRow(item, colomns) {
+  function getTableRow(item, columns) {
     const tableRow = new Array();
-    colomns.forEach((colomn) => {
-      var value = getValue(item, colomn.valueKeyPath);
+    columns.forEach((column) => {
+      var value = getValue(item, column.valueKeyPath);
 
       // 記法が指定されていれば値を修正する
-      if (colomn.notation) {
-        value = colomn.notation(value);
+      if (column.notation) {
+        value = column.notation(value);
       }
 
       tableRow.push(value);
@@ -206,18 +206,18 @@
     <h2 class="text-2xl font-bold">予約一覧</h2>
 
     <DataTable class="mt-10" table$aria-label="User list" style="width: 100%">
-      {@const elements = getTableElementsForCurrentAttribute()}
+      {@const columns = getTableElementsForCurrentAttribute()}
       <Head>
         <Row>
-          {#each elements as element}
-            <Cell style="text-align: center;">{element.headerText}</Cell>
+          {#each columns as column}
+            <Cell style="text-align: center;">{column.headerText}</Cell>
           {/each}
         </Row>
       </Head>
       {#each items as item (item.id)}
         <Body class="cell">
           <Row on:click={$goto(`./${item}`)}>
-            {#each getTableRow(item, elements) as value}
+            {#each getTableRow(item, columns) as value}
               <Cell style="text-align: center;">{value}</Cell>
             {/each}
           </Row>
