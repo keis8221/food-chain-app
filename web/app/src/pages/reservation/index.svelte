@@ -25,7 +25,7 @@
    */
   const ALL_TABLE_ELEMENTS = [
     {
-      headerText: "生産者",
+      headerText: "生産者名",
       visibleAttributes: [
         ATTRIBUTE.CONSUMER, 
         ATTRIBUTE.LOGISTICS
@@ -42,7 +42,7 @@
       valueKeyPath: "product.name",
     },
     {
-      headerText: "数量",
+      headerText: "予約数量",
       visibleAttributes: [
         ATTRIBUTE.CONSUMER,
         ATTRIBUTE.PRODUCER,
@@ -61,7 +61,7 @@
       notation: (value) => `${value}円`,
     },
     {
-      headerText: "予約者",
+      headerText: "予約者名",
       visibleAttributes: [
         ATTRIBUTE.PRODUCER, 
         ATTRIBUTE.LOGISTICS
