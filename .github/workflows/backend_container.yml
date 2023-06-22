@@ -10,6 +10,7 @@ on:
     paths:
       - "server/app/**"
       - ".github/workflows/backend_container.yml"
+  workflow_dispatch:
 
 defaults:
   run:

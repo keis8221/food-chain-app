@@ -17,7 +17,7 @@ import { JwtAuthGuard } from 'src/account/jwt-auth.guard';
 @Controller('products')
 @UseGuards(JwtAuthGuard)
 export class ProductController {
-  constructor(private readonly productService: ProductService) { }
+  constructor(private readonly productService: ProductService) {}
 
   @Get()
   async getProducts() {
@@ -25,9 +25,7 @@ export class ProductController {
   }
 
   @Get('/:productId')
-  async getProduct(
-    @Param('productId') productId: string,
-  ) {
+  async getProduct(@Param('productId') productId: string) {
     return this.productService.getProduct(productId);
   }
 

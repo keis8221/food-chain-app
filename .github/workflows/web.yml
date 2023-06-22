@@ -10,6 +10,7 @@ on:
     paths:
       - "web/app/**"
       - ".github/workflows/web.yml"
+  workflow_dispatch:
 
 defaults:
   run:
