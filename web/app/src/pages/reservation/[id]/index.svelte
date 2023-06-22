@@ -1,7 +1,10 @@
 <script lang="ts">
   import { goto } from "@roxi/routify";
   import { addToast } from "../../../stores/Toast";
-  import { ReservationRepository, type TReservation } from "../../../models/Reservation";
+  import {
+    ReservationRepository,
+    type TReservation,
+  } from "../../../models/Reservation";
   import CircularProgress from "@smui/circular-progress";
   import { params } from "@roxi/routify";
   import dayjs from "dayjs";
@@ -11,7 +14,7 @@
   import { markAsLogoutState } from "../../../stores/Login";
   import { CROP_UNITS_LABEL } from "../../../constants/product";
   import { profile } from "../../../stores/Account";
-  
+
   // 仮置き。reservation_index取り込んだら消えるよ。
   const USER_ATTRIBUTE = {
     producer: "producer",
@@ -21,7 +24,7 @@
   };
 
   $: reservationRepository = new ReservationRepository();
-  
+
   let reservationStatus: TReservation["status"];
 
   async function fetchReservationProducts() {
@@ -40,8 +43,7 @@
     // ここのガード処理いるか？ボタンのvisiblityで充分じゃないか？
     if ($profile.attribute !== USER_ATTRIBUTE.producer) {
       addToast({
-        message:
-          "無効なユーザー属性です。",
+        message: "無効なユーザー属性です。",
         type: "error",
       });
       return;
@@ -51,13 +53,15 @@
     const shipperId = $profile.id;
 
     try {
-      const updateReservationData = await reservationRepository.packed($params.id, {shipperId: shipperId});
+      const updateReservationData = await reservationRepository.packed(
+        $params.id,
+        { shipperId: shipperId }
+      );
       reservationStatus = updateReservationData.status;
       addToast({
-        message:
-          "予約商品の出荷が完了しました。",
+        message: "予約商品の出荷が完了しました。",
       });
-    } catch(err) {
+    } catch (err) {
       handleError(err);
     }
   }
@@ -67,21 +71,21 @@
     // ここのガード処理いるか？ボタンのvisiblityで充分じゃないか？
     if ($profile.attribute !== USER_ATTRIBUTE.intermediary) {
       addToast({
-        message:
-          "無効なユーザー属性です。",
+        message: "無効なユーザー属性です。",
         type: "error",
       });
       return;
     }
 
     try {
-      const updateReservationData = await reservationRepository.kept($params.id);
+      const updateReservationData = await reservationRepository.kept(
+        $params.id
+      );
       reservationStatus = updateReservationData.status;
       addToast({
-        message:
-          "予約商品の店舗預かりが完了しました。",
+        message: "予約商品の店舗預かりが完了しました。",
       });
-    } catch(err) {
+    } catch (err) {
       handleError(err);
     }
   }
@@ -91,48 +95,48 @@
     // ここのガード処理いるか？ボタンのvisiblityで充分じゃないか？
     if ($profile.attribute !== USER_ATTRIBUTE.consumer) {
       addToast({
-        message:
-          "無効なユーザー属性です。",
+        message: "無効なユーザー属性です。",
       });
       return;
     }
 
     try {
-      const updateReservationData = await reservationRepository.received($params.id);
+      const updateReservationData = await reservationRepository.received(
+        $params.id
+      );
       reservationStatus = updateReservationData.status;
       addToast({
-        message:
-          "予約商品の受取りを完了しました。",
+        message: "予約商品の受取りを完了しました。",
       });
-    } catch(err) {
+    } catch (err) {
       handleError(err);
     }
   }
 
   function handleError(err) {
     switch (err.error || err.message) {
-        case "Bad Request":
-          addToast({
-            message: "予約の更新に失敗しました。開発者へお問い合わせください。", // 400 Bad Request が返る = ガード条件不備のフロントエンド実装ミス
-            type: "error",
-          });
-          break;
-        case "Unauthorized":
-          markAsLogoutState();
-          addToast({
-            message: "認証が切れました。再度ログインしてください。",
-            type: "error",
-          });
-          $goto("/login");
-          break;
-        default:
-          addToast({
-            message:
-              "予約の更新に失敗しました。もう一度時間をおいて再読み込みしてください。",
-            type: "error",
-          });
-          break;
-      }
+      case "Bad Request":
+        addToast({
+          message: "予約の更新に失敗しました。開発者へお問い合わせください。", // 400 Bad Request が返る = ガード条件不備のフロントエンド実装ミス
+          type: "error",
+        });
+        break;
+      case "Unauthorized":
+        markAsLogoutState();
+        addToast({
+          message: "認証が切れました。再度ログインしてください。",
+          type: "error",
+        });
+        $goto("/login");
+        break;
+      default:
+        addToast({
+          message:
+            "予約の更新に失敗しました。もう一度時間をおいて再読み込みしてください。",
+          type: "error",
+        });
+        break;
+    }
   }
 </script>
 
