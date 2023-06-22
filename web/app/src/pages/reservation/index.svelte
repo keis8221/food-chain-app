@@ -59,11 +59,9 @@
       </Head>
       {#each items as item (item.id)}
         <Body class="cell">
-          <Row on:click={ $goto(`./${item}`)}>
+          <Row on:click={$goto(`./${item.id}`)}>
             <Cell>{item.consumer?.name}</Cell>
-            <Cell
-              >{dayjs(item.desiredAt).format("MM/DD HH:mm")}</Cell
-            >
+            <Cell>{dayjs(item.desiredAt).format("MM/DD HH:mm")}</Cell>
             <Cell>{item.receiveLocation.name}</Cell>
             <Cell>{item.product.name}</Cell>
             <Cell>{item.quantity}</Cell>

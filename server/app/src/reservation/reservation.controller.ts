@@ -28,8 +28,10 @@ export class ReservationController {
   }
 
   @Get('/products/:reservationId')
-  async getReservation(@Param('id') id: string): Promise<TReservation> {
-    return await this.reservationService.getReservation(id);
+  async getReservation(
+    @Param('reservationId') reservationId: string,
+  ): Promise<TReservation> {
+    return await this.reservationService.getReservation(reservationId);
   }
 
   @Post()

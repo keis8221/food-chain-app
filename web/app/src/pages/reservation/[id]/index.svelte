@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { goto } from "@roxi/routify";
   import { addToast } from "../../../stores/Toast";
   import { ReservationRepository } from "../../../models/Reservation";
   import CircularProgress from "@smui/circular-progress";
@@ -6,6 +7,7 @@
   import dayjs from "dayjs";
   import { Content } from "@smui/dialog";
   import StatusLabel from ".././_components/StatusLabel.svelte";
+  import { markAsLogoutState } from "../../../stores/Login";
 
   $: reservationRepository = new ReservationRepository();
 
@@ -24,13 +26,26 @@
 
   async function fetchReservationProducts() {
     try {
-      return reservationRepository.findOne($params.id);
+      return await reservationRepository.findOne($params.id);
     } catch (err) {
-      addToast({
-        message:
-          "予約の取得に失敗しました。もう一度時間をおいて再読み込みしてください。",
-        type: "error",
-      });
+      switch (err.error || err.message) {
+        case "Unauthorized":
+          markAsLogoutState();
+          addToast({
+            message: "認証が切れました。再度ログインしてください。",
+            type: "error",
+          });
+          $goto("/login");
+          break;
+        default:
+          addToast({
+            message:
+              "予約の取得に失敗しました。もう一度時間をおいて再読み込みしてください。",
+            type: "error",
+          });
+          break;
+      }
+      return null;
     }
   }
 </script>
