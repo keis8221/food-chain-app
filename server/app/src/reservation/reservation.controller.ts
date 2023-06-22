@@ -13,7 +13,7 @@ import { GetAccount } from 'src/account/get-account.decorator';
 import { JwtAuthGuard } from 'src/account/jwt-auth.guard';
 import { CreateReservationDto } from './dto/create-reservation.dto';
 import { UpdateReservationForPackedDto } from './dto/update-reservation-for-packed.dto';
-import { Reservation, TReservation } from './entities/reservation.entity';
+import { TReservation } from './entities/reservation.entity';
 import { ReservationService } from './reservation.service';
 import { Account } from 'src/account/entities/account.entity';
 
