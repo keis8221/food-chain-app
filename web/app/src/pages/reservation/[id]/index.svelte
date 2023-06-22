@@ -39,7 +39,6 @@
   }
 
   async function packed() {
-    console.log("出荷ボタンが押された");
     // ここのガード処理いるか？ボタンのvisiblityで充分じゃないか？
     if ($profile.attribute !== USER_ATTRIBUTE.producer) {
       addToast({
@@ -67,7 +66,6 @@
   }
 
   async function kept() {
-    console.log("店舗預かりボタンが押された");
     // ここのガード処理いるか？ボタンのvisiblityで充分じゃないか？
     if ($profile.attribute !== USER_ATTRIBUTE.intermediary) {
       addToast({
@@ -91,7 +89,6 @@
   }
 
   async function received() {
-    console.log("受取りボタンが押された");
     // ここのガード処理いるか？ボタンのvisiblityで充分じゃないか？
     if ($profile.attribute !== USER_ATTRIBUTE.consumer) {
       addToast({
