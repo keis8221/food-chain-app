@@ -13,7 +13,12 @@
   import { AccountService } from "../../services/AccountService";
   import { ShowableError } from "../../models/Error";
   import { encodeFileToBase64 } from "../../utils/file";
-  import { USER_CLASSIFICATION, USER_CLASSIFICATION_LABEL, USER_ATTRIBUTE, USER_ATTRIBUTE_LABEL } from "../../constants/account";
+  import {
+    USER_CLASSIFICATION,
+    USER_CLASSIFICATION_LABEL,
+    USER_ATTRIBUTE,
+    USER_ATTRIBUTE_LABEL,
+  } from "../../constants/account";
 
   let email = "";
   let password = "";
@@ -74,7 +79,7 @@
           zipCode,
           address,
           remarks,
-          image
+          image,
         })
         .then(() => {
           addToast({
@@ -242,7 +247,9 @@
         bind:value={remarks}
         textarea
         input$maxlength={500}
-        input$placeholder={attribute === USER_ATTRIBUTE.intermediary ? "例）営業時間、定休日" : ""}
+        input$placeholder={attribute === USER_ATTRIBUTE.intermediary
+          ? "例）営業時間、定休日"
+          : ""}
       />
     </div>
 
@@ -278,12 +285,20 @@
                 <CloseIcon />
               </IconButton>
               <div class="grid justify-center">
-                <img class="px-10" src={image} alt="" width="360" height="360" />
+                <img
+                  class="px-10"
+                  src={image}
+                  alt=""
+                  width="360"
+                  height="360"
+                />
               </div>
             </div>
           {/if}
         </div>
-        <div class="text-text-lightGray text-sm">最大アップロードサイズ:5MB</div>
+        <div class="text-text-lightGray text-sm">
+          最大アップロードサイズ:5MB
+        </div>
       </div>
     </div>
 
