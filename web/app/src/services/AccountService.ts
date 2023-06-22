@@ -87,4 +87,24 @@ export class AccountService {
       }
     }
   }
+
+  async getLogistics(): Promise<Record<string, string>[]> {
+    try {
+      return await baseAPI<Record<string, string>[]>({
+        endpoint: "account/logistics",
+        method: "GET",
+      });
+    } catch (err) {
+      switch (err.error || err.message) {
+        case "Unauthorized":
+          throw new ShowableError(
+            "認証が切れました。再度ログインしてください。"
+          );
+        default:
+          throw new ShowableError(
+            "エラーが発生しました。時間をおいて再読み込みしてください。"
+          );
+      }
+    }
+  }
 }

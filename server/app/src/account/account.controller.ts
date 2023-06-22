@@ -44,4 +44,10 @@ export class AccountController {
   async getShops() {
     return await this.accountService.getShops();
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('/logistics')
+  async getLogistics() {
+    return await this.accountService.getLogistics();
+  }
 }
