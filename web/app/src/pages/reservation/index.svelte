@@ -51,41 +51,41 @@
     <DataTable class="mt-10" table$aria-label="User list" style="width: 100%">
       <Head>
         <Row>
-          {#if $profile.attribute != USER_ATTRIBUTE.producer}
-            <Cell style="text-align: center;">生産者</Cell>
+          {#if $profile.attribute !== USER_ATTRIBUTE.producer}
+            <Cell class="text-center">生産者</Cell>
           {/if}
-          <Cell style="text-align: center;">作物名</Cell>
-          <Cell style="text-align: center;">数量</Cell>
-          <Cell style="text-align: center;">合計金額</Cell>
-          {#if $profile.attribute != USER_ATTRIBUTE.consumer}
-            <Cell style="text-align: center;">予約者</Cell>
+          <Cell class="text-center">作物名</Cell>
+          <Cell class="text-center">数量</Cell>
+          <Cell class="text-center">合計金額</Cell>
+          {#if $profile.attribute !== USER_ATTRIBUTE.consumer}
+            <Cell class="text-center">予約者</Cell>
           {/if}
-          <Cell style="text-align: center;">受取り希望日</Cell>
-          <Cell style="text-align: center;">受取り場所</Cell>
-          <Cell style="text-align: center;">配送者</Cell>
-          <Cell style="text-align: center;">ステータス</Cell>
+          <Cell class="text-center">受取り希望日</Cell>
+          <Cell class="text-center">受取り場所</Cell>
+          <Cell class="text-center">配送者</Cell>
+          <Cell class="text-center">ステータス</Cell>
         </Row>
       </Head>
       {#each items as item (item.id)}
         <Body class="cell">
           <Row on:click={$goto(`./${item.id}`)}>
-            {#if $profile.attribute != USER_ATTRIBUTE.producer}
-              <Cell style="text-align: center;"
+            {#if $profile.attribute !== USER_ATTRIBUTE.producer}
+              <Cell class="text-center"
                 >{item.product.producer.name}</Cell
               >
             {/if}
-            <Cell style="text-align: center;">{item.product.name}</Cell>
-            <Cell style="text-align: center;">{item.quantity}</Cell>
-            <Cell style="text-align: center;">{item.totalPrice}円</Cell>
-            {#if $profile.attribute != USER_ATTRIBUTE.consumer}
-              <Cell style="text-align: center;">{item.consumer.name}</Cell>
+            <Cell class="text-center">{item.product.name}</Cell>
+            <Cell class="text-center">{item.quantity}</Cell>
+            <Cell class="text-center">{item.totalPrice}円</Cell>
+            {#if $profile.attribute !== USER_ATTRIBUTE.consumer}
+              <Cell class="text-center">{item.consumer.name}</Cell>
             {/if}
-            <Cell style="text-align: center;"
+            <Cell class="text-center"
               >{dayjs(item.desiredAt).format("YYYY/MM/DD")}</Cell
             >
-            <Cell style="text-align: center;">{item.receiveLocation.name}</Cell>
-            <Cell style="text-align: center;">{item.shipper?.name ?? ""}</Cell>
-            <Cell style="text-align: center;">{statusToText[item.status]}</Cell>
+            <Cell class="text-center">{item.receiveLocation.name}</Cell>
+            <Cell class="text-center">{item.shipper?.name ?? ""}</Cell>
+            <Cell class="text-center">{statusToText[item.status]}</Cell>
           </Row>
         </Body>
       {/each}
