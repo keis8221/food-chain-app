@@ -8,21 +8,9 @@
   import { Content } from "@smui/dialog";
   import StatusLabel from ".././_components/StatusLabel.svelte";
   import { markAsLogoutState } from "../../../stores/Login";
+  import { CROP_UNITS_LABEL } from "../../../constants/product";
 
   $: reservationRepository = new ReservationRepository();
-
-  // 単位日本語化
-  export const CROP_UNITS_TEXT = {
-    gram: "g",
-    stalk: "本",
-    piece: "個",
-    portion: "玉",
-    share: "株",
-    bundle: "束",
-    pile: "山",
-    pack: "パック",
-    bag: "袋",
-  };
 
   async function fetchReservationProducts() {
     try {
@@ -55,75 +43,114 @@
     <CircularProgress style="height: 160px; width: 32px;" indeterminate />
   </div>
 {:then reservationData}
-  <div class="mt-3 flex justify-between">
-    <!-- <h2 class="m-4 text-2xl font-bold">予約詳細</h2> -->
-    <div class="m-2 mr-4">
-      <StatusLabel status={reservationData.status} />
-    </div>
-  </div>
   <Content>
-    <div class="reservationsBody">
-      <div class="mb-2">
-        <div class="text-lg">
+    <div class="grid justify-center">
+      <div class="container">
+        <div class="text-lg;">
           <p class="producer-image">
-            <img
-              class="w-[40px] h-[40px]"
-              src="./../../../../public/images/farmer.png"
-              alt=""
-            />
+            {#if reservationData.product.producer.classification == "individual"}
+              <img
+                class="w-[40px] h-[40px]"
+                src="./../../../public/images/individual_icon.png"
+                alt=""
+              />
+            {:else if reservationData.product.producer.classification == "corporate"}
+              <img
+                class="w-[40px] h-[40px]"
+                src="./../../../public/images/corporate_icon.png"
+                alt=""
+              />
+            {/if}
           </p>
-          <!-- 生産者名 -->
           <p class="producer-name">
             {reservationData.product.producer.name}
           </p>
         </div>
-        <div class="text-lg font-bold">
-          {reservationData.product.name}
+        <div class="product-status font-bold mt-5 mb-5">
+          <p class="product-name">
+            {reservationData.product.name}
+          </p>
+          <p class="status-label">
+            <StatusLabel status={reservationData.status} />
+          </p>
         </div>
-        <img
-          class="w-[512px] h-auto"
-          src={reservationData.product.image ??
-            "https://girlydrop.com/wp-content/uploads/post/p5774.jpg"}
-          alt=""
-        />
       </div>
 
-      <div class="mt-4">
-        <div class="reservation-info font-bold">
-          <p>
-            <span class="col">数量</span>：{reservationData.quantity}
-            {CROP_UNITS_TEXT[reservationData.product.unit]}
-            <br />
-            <span class="col">合計金額</span>：{reservationData.product
-              .unitPrice * reservationData.quantity}円
-            <br />
-          </p>
-          <hr />
-          <p>
-            <span class="col">予約者</span>：{reservationData.consumer.name}
-            <br />
-            <span class="col">希望日</span>：{dayjs(
-              reservationData.desiredAt
-            ).format("YYYY/MM/DD")}
-            <br />
-            <span class="col">場所</span>：{reservationData.receiveLocation
-              .name}
-            <br />
-            <span class="col-address" />{reservationData.receiveLocation
-              .address}
-          </p>
+      <div class="reservation-info-body">
+        <div class="product-image">
+          <img
+            class="w-[300px] h-auto"
+            src={reservationData.product.image ??
+              "./../../../public/images/default_product_image.png"}
+            alt=""
+          />
         </div>
+        <table style="border:none; margin:0 auto;">
+          <tbody style="border:none;">
+            <tr style="border:none;">
+              <td style="border:none;">数量</td>
+              <td style="border:none;">：</td>
+              <td style="border:none;"
+                >{reservationData.quantity}{CROP_UNITS_LABEL[
+                  reservationData.product.unit
+                ]}</td
+              >
+            </tr>
+            <tr class="total-amount">
+              <td style="border:none;">合計<wbr />金額</td>
+              <td style="border:none;">：</td>
+              <td style="border:none;"
+                >{reservationData.product.unitPrice *
+                  reservationData.quantity}円</td
+              >
+            </tr>
+            <tr style="border:none;">
+              <td style="border:none;">予約者</td>
+              <td style="border:none;">：</td>
+              <td style="border:none;">{reservationData.consumer.name}</td>
+            </tr>
+            <tr style="border:none;">
+              <td style="border:none;">希望日</td>
+              <td style="border:none;">：</td>
+              <td style="border:none;"
+                >{dayjs(reservationData.desiredAt).format("YYYY/MM/DD")}</td
+              >
+            </tr>
+            <tr style="border:none;">
+              <td style="border:none;">場所</td>
+              <td style="border:none;">：</td>
+              <td style="border:none;"
+                >{reservationData.receiveLocation.name}</td
+              >
+            </tr>
+            <tr style="border:none;">
+              <td style="border:none;" />
+              <td style="border:none;" />
+              <td style="border:none;"
+                >{reservationData.receiveLocation.address}</td
+              >
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </Content>
 {/await}
 
 <style>
-  div.mt-3 {
-    margin: 1vh;
+  div.product-status {
+    display: flex;
+    justify-content: space-between;
   }
-  div.reservationsBody {
-    margin: 1vh;
+  p.product-name {
+    font-size: 20px;
+    text-align: left;
+    display: flex;
+    align-items: flex-end;
+  }
+  p.status-label {
+    vertical-align: middle;
+    text-align: right;
   }
   .producer-image {
     display: inline-block;
@@ -132,19 +159,14 @@
   p.producer-name {
     display: inline-block;
     vertical-align: middle;
-    margin-left: 15px;
   }
-  div.reservation-info p {
-    padding: 10px;
+  .total-amount {
+    border-bottom: 1px solid black;
   }
-  div.reservation-info .col {
-    display: inline-block;
-    width: 120px;
-    line-height: 19px;
-  }
-  div.reservation-info .col-address {
-    display: inline-block;
-    width: 135px;
-    line-height: 19px;
+  div.product-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 2vh;
   }
 </style>
