@@ -10,7 +10,7 @@
   import dayjs from "dayjs";
   import { markAsLogoutState } from "../../stores/Login";
   import { profile } from "../../stores/Account";
-  import { ATTRIBUTE } from "../../constants/account";
+  import { USER_ATTRIBUTE } from "../../constants/account";
 
   $: reservationRepository = new ReservationRepository();
 
@@ -51,13 +51,13 @@
     <DataTable class="mt-10" table$aria-label="User list" style="width: 100%">
       <Head>
         <Row>
-          {#if $profile.attribute != ATTRIBUTE.PRODUCER}
+          {#if $profile.attribute != USER_ATTRIBUTE.producer}
             <Cell style="text-align: center;">生産者</Cell>
           {/if}
           <Cell style="text-align: center;">作物名</Cell>
           <Cell style="text-align: center;">数量</Cell>
           <Cell style="text-align: center;">合計金額</Cell>
-          {#if $profile.attribute != ATTRIBUTE.CONSUMER}
+          {#if $profile.attribute != USER_ATTRIBUTE.consumer}
             <Cell style="text-align: center;">予約者</Cell>
           {/if}
           <Cell style="text-align: center;">受取り希望日</Cell>
@@ -69,7 +69,7 @@
       {#each items as item (item.id)}
         <Body class="cell">
           <Row on:click={$goto(`./${item.id}`)}>
-            {#if $profile.attribute != ATTRIBUTE.PRODUCER}
+            {#if $profile.attribute != USER_ATTRIBUTE.producer}
               <Cell style="text-align: center;"
                 >{item.product.producer.name}</Cell
               >
@@ -77,7 +77,7 @@
             <Cell style="text-align: center;">{item.product.name}</Cell>
             <Cell style="text-align: center;">{item.quantity}</Cell>
             <Cell style="text-align: center;">{item.totalPrice}円</Cell>
-            {#if $profile.attribute != ATTRIBUTE.CONSUMER}
+            {#if $profile.attribute != USER_ATTRIBUTE.consumer}
               <Cell style="text-align: center;">{item.consumer.name}</Cell>
             {/if}
             <Cell style="text-align: center;"
