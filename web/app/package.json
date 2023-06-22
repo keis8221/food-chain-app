@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "routify -c dev:vite",
     "dev-docker": "routify -c dev:vite-docker",
-    "build": "svelte-check && routify -b && vite build && npm run smui-theme-build",
+    "build": "routify -b && svelte-check && vite build && npm run smui-theme-build",
     "dev:vite": "vite",
     "dev:vite-docker": "vite --host",
     "preview": "vite preview",

@@ -4,7 +4,6 @@
   import {
     ReservationRepository,
     statusToText,
-    type TReservation,
   } from "../../models/Reservation";
   import { addToast } from "../../stores/Toast";
   import CircularProgress from "@smui/circular-progress";
@@ -69,7 +68,7 @@
       </Head>
       {#each items as item (item.id)}
         <Body class="cell">
-          <Row on:click={$goto(`./${item}`)}>
+          <Row on:click={$goto(`./${item.id}`)}>
             {#if $profile.attribute != ATTRIBUTE.PRODUCER}
               <Cell style="text-align: center;"
                 >{item.product.producer.name}</Cell

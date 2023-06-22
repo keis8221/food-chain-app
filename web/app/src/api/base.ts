@@ -18,7 +18,7 @@ export async function baseAPI<
     controller.abort();
   }, 10 * 1000); // デフォルトでは10秒でタイムアウト
 
-  const res = await fetch(`http://localhost:3000/${endpoint}`, {
+  const res = await fetch(`/api/${endpoint}`, {
     method,
     mode: "cors",
     headers: {
