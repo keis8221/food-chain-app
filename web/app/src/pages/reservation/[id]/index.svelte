@@ -185,7 +185,7 @@
           {reservationData.product.producer.name}
         </p>
       </div>
-      <div class="product-status font-bold mt-5 mb-5">
+      <div class="product-status font-bold mt-5 mb-5 relative">
         <p class="product-name">
           {reservationData.product.name}
         </p>
