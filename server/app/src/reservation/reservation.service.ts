@@ -131,10 +131,6 @@ export class ReservationService {
     reservationId: string,
     dto: UpdateReservationForPackedDto,
   ): Promise<TReservation> {
-    if (account.attribute !== USER_ATTRIBUTE.producer) {
-      throw new BadRequestException();
-    }
-
     const reservation = await this.reservationRepository
       .findOne({
         where: { id: reservationId },
@@ -163,10 +159,6 @@ export class ReservationService {
     account: Account,
     reservationId: string,
   ): Promise<TReservation> {
-    if (account.attribute !== USER_ATTRIBUTE.intermediary) {
-      throw new BadRequestException();
-    }
-
     const reservation = await this.reservationRepository
       .findOne({ where: { id: reservationId } })
       .then((reservation) => reservation.convertTReservation());
@@ -192,10 +184,6 @@ export class ReservationService {
     account: Account,
     reservationId: string,
   ): Promise<TReservation> {
-    if (account.attribute !== USER_ATTRIBUTE.consumer) {
-      throw new BadRequestException();
-    }
-
     const reservation = await this.reservationRepository
       .findOne({ where: { id: reservationId } })
       .then((reservation) => reservation.convertTReservation());
