@@ -9,6 +9,8 @@
   import CircularProgress from "@smui/circular-progress";
   import dayjs from "dayjs";
   import { markAsLogoutState } from "../../stores/Login";
+  import { profile } from "../../stores/Account";
+  import { USER_ATTRIBUTE } from "../../constants/account";
 
   $: reservationRepository = new ReservationRepository();
 
@@ -49,23 +51,41 @@
     <DataTable class="mt-10" table$aria-label="User list" style="width: 100%">
       <Head>
         <Row>
-          <Cell>予約者名</Cell>
-          <Cell>受け取り希望日時</Cell>
-          <Cell>受け取り場所</Cell>
-          <Cell>予約商品</Cell>
-          <Cell>個数</Cell>
-          <Cell>ステータス</Cell>
+          {#if $profile.attribute !== USER_ATTRIBUTE.producer}
+            <Cell class="text-center">生産者</Cell>
+          {/if}
+          <Cell class="text-center">作物名</Cell>
+          <Cell class="text-center">数量</Cell>
+          <Cell class="text-center">合計金額</Cell>
+          {#if $profile.attribute !== USER_ATTRIBUTE.consumer}
+            <Cell class="text-center">予約者</Cell>
+          {/if}
+          <Cell class="text-center">受取り希望日</Cell>
+          <Cell class="text-center">受取り場所</Cell>
+          <Cell class="text-center">配送者</Cell>
+          <Cell class="text-center">ステータス</Cell>
         </Row>
       </Head>
       {#each items as item (item.id)}
         <Body class="cell">
           <Row on:click={$goto(`./${item.id}`)}>
-            <Cell>{item.consumer?.name}</Cell>
-            <Cell>{dayjs(item.desiredAt).format("MM/DD HH:mm")}</Cell>
-            <Cell>{item.receiveLocation.name}</Cell>
-            <Cell>{item.product.name}</Cell>
-            <Cell>{item.quantity}</Cell>
-            <Cell>{statusToText[item.status]}</Cell>
+            {#if $profile.attribute !== USER_ATTRIBUTE.producer}
+              <Cell class="text-center"
+                >{item.product.producer.name}</Cell
+              >
+            {/if}
+            <Cell class="text-center">{item.product.name}</Cell>
+            <Cell class="text-center">{item.quantity}</Cell>
+            <Cell class="text-center">{item.totalPrice}円</Cell>
+            {#if $profile.attribute !== USER_ATTRIBUTE.consumer}
+              <Cell class="text-center">{item.consumer.name}</Cell>
+            {/if}
+            <Cell class="text-center"
+              >{dayjs(item.desiredAt).format("YYYY/MM/DD")}</Cell
+            >
+            <Cell class="text-center">{item.receiveLocation.name}</Cell>
+            <Cell class="text-center">{item.shipper?.name ?? ""}</Cell>
+            <Cell class="text-center">{statusToText[item.status]}</Cell>
           </Row>
         </Body>
       {/each}

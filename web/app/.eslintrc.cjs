@@ -7,25 +7,26 @@ module.exports = {
     extends: [
         "eslint:recommended",
         "plugin:@typescript-eslint/recommended",
-        "prettier"
+        "plugin:svelte/recommended",
+        "prettier",
     ],
     overrides: [{
         files: ["*.svelte"],
-        processor: "svelte3/svelte3"
+        parser: "svelte-eslint-parser",
+        parserOptions: {
+            parser: "@typescript-eslint/parser",
+        },
     }],
     parser: "@typescript-eslint/parser",
     parserOptions: {
         ecmaVersion: "latest",
-        sourceType: "module"
+        sourceType: "module",
+        extraFileExtensions: [".svelte"],
     },
     plugins: [
         "@typescript-eslint",
-        "svelte3"
     ],
     rules: {
         ["no-console"]: ["error", { allow: ["warn", "error"] }]
-    },
-    settings: {
-        "svelte3/typescript": true
     }
 }
