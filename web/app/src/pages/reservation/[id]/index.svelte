@@ -4,15 +4,15 @@
   import {
     ReservationRepository,
     type TReservation,
-    RESERVATION_STATUS
+    RESERVATION_STATUS,
   } from "../../../models/Reservation";
   import CircularProgress from "@smui/circular-progress";
   import { params } from "@roxi/routify";
   import dayjs from "dayjs";
   import Button from "@smui/button";
   import Dialog, { Title, Content, Actions } from "@smui/dialog";
-  import List, { Item, Graphic, Text } from '@smui/list';
-  import Radio from '@smui/radio';
+  import List, { Item, Graphic, Text } from "@smui/list";
+  import Radio from "@smui/radio";
   import StatusLabel from ".././_components/StatusLabel.svelte";
   import { markAsLogoutState } from "../../../stores/Login";
   import { CROP_UNITS_LABEL } from "../../../constants/product";
@@ -35,19 +35,25 @@
   }
 
   $: isShowPackedButton = (reservation) => {
-    return RESERVATION_STATUS.packking === reservationStatus
-      && reservation.product.producerId === $profile.id;
-  }
+    return (
+      RESERVATION_STATUS.packking === reservationStatus &&
+      reservation.product.producerId === $profile.id
+    );
+  };
 
   $: isShowKeptButton = (reservation) => {
-    return RESERVATION_STATUS.shipping === reservationStatus
-      && reservation.receiveLocationId === $profile.id;
-  }
+    return (
+      RESERVATION_STATUS.shipping === reservationStatus &&
+      reservation.receiveLocationId === $profile.id
+    );
+  };
 
   $: isShowReceivedButton = (reservation) => {
-    return RESERVATION_STATUS.keeping === reservationStatus
-      && reservation.consumerId === $profile.id;
-  }
+    return (
+      RESERVATION_STATUS.keeping === reservationStatus &&
+      reservation.consumerId === $profile.id
+    );
+  };
 
   let isOpenPackedConfirmDialog = false;
   let isOpenKeptConfirmDialog = false;
@@ -58,6 +64,9 @@
   async function fetchLogistics() {
     try {
       const logistics = await new AccountService().getLogistics();
+      // システム要求仕様 2-2-3-11.
+      // 配送者の選択肢は自身と物流業者として登録されているアカウントの一覧
+      logistics.push($profile);
       return Object.fromEntries(logistics.map(({ id, name }) => [id, name]));
     } catch (err) {
       handleError(err);
@@ -153,14 +162,14 @@
 </script>
 
 {#await fetchReservationProducts()}
-  <div style="display: flex; justify-content: center">
+  <div class="flex justify-center">
     <CircularProgress style="height: 160px; width: 32px;" indeterminate />
   </div>
 {:then reservationData}
   <div class="grid justify-center">
     <div class="container">
-      <div class="text-lg;">
-        <p class="producer-image">
+      <div class="text-lg">
+        <p class="producer-image inline-block align-middle">
           {#if reservationData.product.producer.image}
             <img
               class="w-[40px] h-[40px] rounded-[50%]"
@@ -181,79 +190,78 @@
             />
           {/if}
         </p>
-        <p class="producer-name">
+        <p class="producer-name inline-block align-middle">
           {reservationData.product.producer.name}
         </p>
-      </div>
-      <div class="product-status font-bold mt-5 mb-5 relative">
-        <p class="product-name">
-          {reservationData.product.name}
-        </p>
-        <p class="status-label">
+        <p class="status-label inline-block align-middle text-right">
           <StatusLabel bind:status={reservationStatus} />
         </p>
+      </div>
+      <div
+        class="product-status font-bold mt-5 mb-5 relative justify-between flex"
+      >
+        <p class="product-name text-xl text-left flex items-end">
+          {reservationData.product.name}
+        </p>
+        <!-- <StatusLabel bind:status={reservationStatus} /> -->
       </div>
     </div>
 
     <div class="reservation-info-body">
-      <div class="product-image">
-        <img
-          class="w-[300px] h-auto"
-          src={reservationData.product.image ??
-            "./../../../public/images/default_product_image.png"}
-          alt=""
-        />
+      <div class="product-image flex justify-center items-center mb-2">
+        <div class="relative w-[300px] h-[300px] object-contain">
+          <img
+            class="absolute top-0 bottom-0 left-0 right-0 h-auto w-auto max-h-full max-w-full m-auto"
+            src={reservationData.product.image ??
+              "./../../../public/images/default_product_image.png"}
+            alt=""
+          />
+        </div>
       </div>
-      <table style="border:none; margin:0 auto;">
-        <tbody style="border:none;">
-          <tr style="border:none;">
-            <td style="border:none;">数量</td>
-            <td style="border:none;">：</td>
-            <td style="border:none;"
+      <table class="flex justify-center border-none m-0" style="auto;">
+        <tbody>
+          <tr>
+            <td>数量</td>
+            <td>：</td>
+            <td
               >{reservationData.quantity}{CROP_UNITS_LABEL[
                 reservationData.product.unit
               ]}</td
             >
           </tr>
-          <tr class="total-amount">
-            <td style="border:none;">合計<wbr />金額</td>
-            <td style="border:none;">：</td>
-            <td style="border:none;"
+          <tr class="total-amount border-b-2">
+            <td>合計<wbr />金額</td>
+            <td>：</td>
+            <td
               >{reservationData.product.unitPrice *
                 reservationData.quantity}円</td
             >
           </tr>
-          <tr style="border:none;">
-            <td style="border:none;">予約者</td>
-            <td style="border:none;">：</td>
-            <td style="border:none;">{reservationData.consumer.name}</td>
+          <tr>
+            <td>予約者</td>
+            <td>：</td>
+            <td>{reservationData.consumer.name}</td>
           </tr>
-          <tr style="border:none;">
-            <td style="border:none;">希望日</td>
-            <td style="border:none;">：</td>
-            <td style="border:none;"
-              >{dayjs(reservationData.desiredAt).format("YYYY/MM/DD")}</td
-            >
+          <tr>
+            <td>希望日</td>
+            <td>：</td>
+            <td>{dayjs(reservationData.desiredAt).format("YYYY/MM/DD")}</td>
           </tr>
-          <tr style="border:none;">
-            <td style="border:none;">場所</td>
-            <td style="border:none;">：</td>
-            <td style="border:none;"
-              >{reservationData.receiveLocation.name}</td
-            >
+          <tr>
+            <td>場所</td>
+            <td>：</td>
+            <td>{reservationData.receiveLocation.name}</td>
           </tr>
-          <tr style="border:none;">
-            <td style="border:none;" />
-            <td style="border:none;" />
-            <td style="border:none;"
-              >{reservationData.receiveLocation.address}</td
-            >
+          <tr>
+            <td />
+            <td />
+            <td>{reservationData.receiveLocation.address}</td>
           </tr>
         </tbody>
       </table>
     </div>
     <div class="grid justify-center p-3 mt-3">
-      {#if isShowPackedButton(reservationData) }
+      {#if isShowPackedButton(reservationData)}
         <Button
           class="w-[150px]  px-4 py-2 rounded-full"
           color="secondary"
@@ -267,13 +275,14 @@
           bind:open={isOpenPackedConfirmDialog}
           on:SMUIDialog:closed={onDialogClosedHandle}
         >
-          <Title>
-            配送者を選択して出荷しますか？
-          </Title>
+          <Title>配送者を選択して出荷しますか？</Title>
           <Content>
             {#await fetchLogistics()}
               <div style="display: flex; justify-content: center">
-                <CircularProgress style="height: 160px; width: 32px;" indeterminate />
+                <CircularProgress
+                  style="height: 160px; width: 32px;"
+                  indeterminate
+                />
               </div>
             {:then logistics}
               <div class="max-h-[300px]">
@@ -294,7 +303,7 @@
             <Button
               class="w-[150px]  px-4 py-2 rounded-full"
               color="secondary"
-              variant="raised"
+              variant="outlined"
             >
               <p class="font-bold text-lg">キャンセル</p>
             </Button>
@@ -310,7 +319,7 @@
           </Actions>
         </Dialog>
       {/if}
-      {#if isShowKeptButton(reservationData) }
+      {#if isShowKeptButton(reservationData)}
         <Button
           class="w-[150px]  px-4 py-2 rounded-full"
           color="secondary"
@@ -324,12 +333,12 @@
           bind:open={isOpenKeptConfirmDialog}
           on:SMUIDialog:closed={onDialogClosedHandle}
         >
-          <Title>店舗で作物を預かってますか？</Title>
+          <Title>店舗で作物を預かりましたか？</Title>
           <Actions>
             <Button
               class="w-[150px]  px-4 py-2 rounded-full"
               color="secondary"
-              variant="raised"
+              variant="outlined"
             >
               <p class="font-bold text-lg">キャンセル</p>
             </Button>
@@ -344,7 +353,7 @@
           </Actions>
         </Dialog>
       {/if}
-      {#if isShowReceivedButton(reservationData) }
+      {#if isShowReceivedButton(reservationData)}
         <Button
           class="w-[150px]  px-4 py-2 rounded-full"
           color="secondary"
@@ -363,7 +372,7 @@
             <Button
               class="w-[150px]  px-4 py-2 rounded-full"
               color="secondary"
-              variant="raised"
+              variant="outlined"
             >
               <p class="font-bold text-lg">キャンセル</p>
             </Button>
@@ -381,37 +390,3 @@
     </div>
   </div>
 {/await}
-
-<style>
-  div.product-status {
-    display: flex;
-    justify-content: space-between;
-  }
-  p.product-name {
-    font-size: 20px;
-    text-align: left;
-    display: flex;
-    align-items: flex-end;
-  }
-  p.status-label {
-    vertical-align: middle;
-    text-align: right;
-  }
-  .producer-image {
-    display: inline-block;
-    vertical-align: middle;
-  }
-  p.producer-name {
-    display: inline-block;
-    vertical-align: middle;
-  }
-  .total-amount {
-    border-bottom: 1px solid black;
-  }
-  div.product-image {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 2vh;
-  }
-</style>
