@@ -18,6 +18,7 @@
   import { CROP_UNITS_LABEL } from "../../../constants/product";
   import { profile } from "../../../stores/Account";
   import { AccountService } from "../../../services/AccountService";
+  import Paper from "@smui/paper";
 
   $: reservationRepository = new ReservationRepository();
 
@@ -64,8 +65,6 @@
   async function fetchLogistics() {
     try {
       const logistics = await new AccountService().getLogistics();
-      // システム要求仕様 2-2-3-11.
-      // 配送者の選択肢は自身と物流業者として登録されているアカウントの一覧
       logistics.push($profile);
       return Object.fromEntries(logistics.map(({ id, name }) => [id, name]));
     } catch (err) {
@@ -169,7 +168,7 @@
   <div class="grid justify-center">
     <div class="container">
       <div class="text-lg">
-        <p class="producer-image inline-block align-middle">
+        <p class="inline-block align-middle">
           {#if reservationData.product.producer.image}
             <img
               class="w-[40px] h-[40px] rounded-[50%]"
@@ -190,25 +189,24 @@
             />
           {/if}
         </p>
-        <p class="producer-name inline-block align-middle">
+        <p class="inline-block align-middle">
           {reservationData.product.producer.name}
         </p>
-        <p class="status-label inline-block align-middle text-right">
+      </div>
+      <div class="relative mb-5 mt-5 flex w-[280px] justify-between font-bold">
+        <p
+          class="flex w-[260px] flex-row flex-wrap items-end text-left text-xl"
+        >
+          {reservationData.product.name}
+        </p>
+        <p class="align-middle text-right">
           <StatusLabel bind:status={reservationStatus} />
         </p>
       </div>
-      <div
-        class="product-status font-bold mt-5 mb-5 relative justify-between flex"
-      >
-        <p class="product-name text-xl text-left flex items-end">
-          {reservationData.product.name}
-        </p>
-        <!-- <StatusLabel bind:status={reservationStatus} /> -->
-      </div>
     </div>
 
-    <div class="reservation-info-body">
-      <div class="product-image flex justify-center items-center mb-2">
+    <div>
+      <div class="flex justify-center items-center mb-2">
         <div class="relative w-[300px] h-[300px] object-contain">
           <img
             class="absolute top-0 bottom-0 left-0 right-0 h-auto w-auto max-h-full max-w-full m-auto"
@@ -218,47 +216,56 @@
           />
         </div>
       </div>
-      <table class="flex justify-center border-none m-0" style="auto;">
-        <tbody>
-          <tr>
-            <td>数量</td>
-            <td>：</td>
-            <td
-              >{reservationData.quantity}{CROP_UNITS_LABEL[
+
+      <div class="m-auto table font-bold">
+        <div class="flex">
+          <div class="flex h-auto flex-col text-left">
+            <p>数量</p>
+            <p>合計金額</p>
+          </div>
+          <div>
+            <p>：</p>
+            <p>：</p>
+          </div>
+          <div class="ml-5">
+            <p>
+              {reservationData.quantity}{CROP_UNITS_LABEL[
                 reservationData.product.unit
-              ]}</td
-            >
-          </tr>
-          <tr class="total-amount border-b-2">
-            <td>合計<wbr />金額</td>
-            <td>：</td>
-            <td
-              >{reservationData.product.unitPrice *
-                reservationData.quantity}円</td
-            >
-          </tr>
-          <tr>
-            <td>予約者</td>
-            <td>：</td>
-            <td>{reservationData.consumer.name}</td>
-          </tr>
-          <tr>
-            <td>希望日</td>
-            <td>：</td>
-            <td>{dayjs(reservationData.desiredAt).format("YYYY/MM/DD")}</td>
-          </tr>
-          <tr>
-            <td>場所</td>
-            <td>：</td>
-            <td>{reservationData.receiveLocation.name}</td>
-          </tr>
-          <tr>
-            <td />
-            <td />
-            <td>{reservationData.receiveLocation.address}</td>
-          </tr>
-        </tbody>
-      </table>
+              ]}
+            </p>
+            <p>
+              {reservationData.product.unitPrice * reservationData.quantity}円
+            </p>
+          </div>
+        </div>
+      </div>
+      <Paper class="m-auto mt-5 table" color="secondary" variant="outlined">
+        <div class="flex">
+          <div class="flex h-auto flex-col text-left">
+            <p>予約者</p>
+            <p>希望日</p>
+            <p>場所</p>
+          </div>
+          <div>
+            <p>：</p>
+            <p>：</p>
+            <p>：</p>
+          </div>
+          <div class="ml-5">
+            <p>
+              {reservationData.consumer.name}
+            </p>
+            <p>
+              {dayjs(reservationData.desiredAt).format("YYYY/MM/DD")}
+            </p>
+            <p class="flex w-[200px] flex-row flex-wrap">
+              {reservationData.receiveLocation.name}
+              <br />
+              {reservationData.receiveLocation.address}
+            </p>
+          </div>
+        </div>
+      </Paper>
     </div>
     <div class="grid justify-center p-3 mt-3">
       {#if isShowPackedButton(reservationData)}
