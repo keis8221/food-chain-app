@@ -61,15 +61,22 @@
           <Card class="rounded-[24px]">
             <Content class="mdc-typography--body2 relative" style="top:10px">
               <div class="">
+                <!-- TODO: imageタグ内の重複コードを解消する -->
                 {#if product.producer.image}
                   <img
-                    class="absolute top-[-12%] w-[30px] h-[30px] rounded-[50%]"
+                    class="absolute top-0 w-[30px] h-[30px] rounded-[50%]"
                     src={product.producer.image}
                     alt=""
                   />
+                {:else if product.producer.classification === "corporate"}
+                  <img
+                    class="absolute top-0 w-[30px] h-[30px] rounded-[50%]"
+                    src="./../../../../public/images/house.png"
+                    alt=""
+                  />    
                 {:else}
                   <img
-                    class="absolute top-[-12%] w-[30px] h-[30px] rounded-[50%]"
+                    class="absolute top-0 w-[30px] h-[30px] rounded-[50%]"
                     src="./../../../public/images/farmer.png"
                     alt=""
                   />
