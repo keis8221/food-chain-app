@@ -1,10 +1,12 @@
 import type { TReservation as BaseTReservation } from "./../../../../server/app/src/reservation/entities/reservation.entity";
 import type { CreateReservationDto } from "./../../../../server/app/src/reservation/dto/create-reservation.dto";
+import type { UpdateReservationForPackedDto } from "./../../../../server/app/src/reservation/dto/update-reservation-for-packed.dto";
 import type { Jsonify } from "type-fest";
 import { baseAPI } from "../api/base";
 
 export type TReservation = Jsonify<BaseTReservation>;
 export type TReservationForm = Jsonify<CreateReservationDto>;
+export type TReservationPackedForm = Jsonify<UpdateReservationForPackedDto>;
 
 export const statusToText: Record<TReservation["status"], string> = {
   canceled: "キャンセル",
@@ -44,6 +46,31 @@ export class ReservationRepository {
       endpoint: `${this.baseEndpoint}`,
       method: "POST",
       body,
+    });
+  }
+
+  async packed(
+    id: string,
+    body: TReservationPackedForm
+  ): Promise<TReservation> {
+    return await baseAPI<TReservation>({
+      endpoint: `${this.baseEndpoint}/products/${id}/packed`,
+      method: "PUT",
+      body,
+    });
+  }
+
+  async kept(id: string): Promise<TReservation> {
+    return await baseAPI<TReservation>({
+      endpoint: `${this.baseEndpoint}/products/${id}/kept`,
+      method: "PUT",
+    });
+  }
+
+  async received(id: string): Promise<TReservation> {
+    return await baseAPI<TReservation>({
+      endpoint: `${this.baseEndpoint}/products/${id}/received`,
+      method: "PUT",
     });
   }
 }

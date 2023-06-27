@@ -64,10 +64,16 @@
               alt=""
             />
           </div>
-        {:else}
+        {:else if product.producer.classification === "individual"}
           <img
             class="w-[90px] h-[90px] rounded-[50%]"
             src="./../../../../public/images/farmer.png"
+            alt=""
+          />
+        {:else if product.producer.classification === "corporate"}
+          <img
+            class="w-[90px] h-[90px] rounded-[50%]"
+            src="./../../../../public/images/house.png"
             alt=""
           />
         {/if}

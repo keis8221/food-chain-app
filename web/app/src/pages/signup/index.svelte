@@ -13,37 +13,19 @@
   import { AccountService } from "../../services/AccountService";
   import { ShowableError } from "../../models/Error";
   import { encodeFileToBase64 } from "../../utils/file";
+  import {
+    USER_CLASSIFICATION,
+    USER_CLASSIFICATION_LABEL,
+    USER_ATTRIBUTE,
+    USER_ATTRIBUTE_LABEL,
+  } from "../../constants/account";
 
   let email = "";
   let password = "";
   let password_confirm = "";
 
-  const USER_CLASSIFICATION = {
-    individual: "individual",
-    corporate: "corporate",
-  } as const;
-
-  const USER_CLASSIFICATION_LABEL = {
-    individual: "個人",
-    corporate: "法人",
-  } as const;
-
   let classification: typeof USER_CLASSIFICATION[keyof typeof USER_CLASSIFICATION] =
     USER_CLASSIFICATION.individual;
-
-  const USER_ATTRIBUTE = {
-    producer: "producer",
-    consumer: "consumer",
-    logistics: "logistics",
-    intermediary: "intermediary",
-  } as const;
-
-  const USER_ATTRIBUTE_LABEL = {
-    producer: "生産者",
-    consumer: "消費者",
-    logistics: "物流業者",
-    intermediary: '引渡し業者',
-  } as const;
 
   let attribute: typeof USER_ATTRIBUTE[keyof typeof USER_ATTRIBUTE] =
     USER_ATTRIBUTE.consumer;
@@ -97,7 +79,7 @@
           zipCode,
           address,
           remarks,
-          image
+          image,
         })
         .then(() => {
           addToast({
@@ -265,7 +247,9 @@
         bind:value={remarks}
         textarea
         input$maxlength={500}
-        input$placeholder={attribute === USER_ATTRIBUTE.intermediary ? "例）営業時間、定休日" : ""}
+        input$placeholder={attribute === USER_ATTRIBUTE.intermediary
+          ? "例）営業時間、定休日"
+          : ""}
       />
     </div>
 
@@ -301,12 +285,20 @@
                 <CloseIcon />
               </IconButton>
               <div class="grid justify-center">
-                <img class="px-10" src={image} alt="" width="360" height="360" />
+                <img
+                  class="px-10"
+                  src={image}
+                  alt=""
+                  width="360"
+                  height="360"
+                />
               </div>
             </div>
           {/if}
         </div>
-        <div class="text-text-lightGray text-sm">最大アップロードサイズ:5MB</div>
+        <div class="text-text-lightGray text-sm">
+          最大アップロードサイズ:5MB
+        </div>
       </div>
     </div>
 

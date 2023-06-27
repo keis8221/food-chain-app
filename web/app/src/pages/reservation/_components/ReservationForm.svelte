@@ -104,10 +104,16 @@
             alt=""
           />
           </div>
-        {:else}
+        {:else if selectedProduct.producer.classification === "individual"}
           <img
             class="w-[45px] h-[45px] rounded-[50%]"
             src="./../../../../public/images/farmer.png"
+            alt=""
+          />
+        {:else if selectedProduct.producer.classification === "corporate"}
+          <img
+            class="w-[45px] h-[45px] rounded-[50%]"
+            src="./../../../../public/images/house.png"
             alt=""
           />
         {/if}
