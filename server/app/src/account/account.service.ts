@@ -42,4 +42,10 @@ export class AccountService {
       where: { attribute: USER_ATTRIBUTE.intermediary, deletedAt: IsNull() },
     });
   }
+
+  async getLogistics(): Promise<Account[] | undefined> {
+    return await this.accountRepository.find({
+      where: { attribute: USER_ATTRIBUTE.logistics, deletedAt: IsNull() },
+    });
+  }
 }
