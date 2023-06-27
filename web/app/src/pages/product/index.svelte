@@ -48,10 +48,10 @@
       <Button
         color="secondary"
         variant="raised"
-        class="px-20 h-16"
+        class="w-[150px] px-4 py-2 mt-10 rounded-full"
         on:click={() => $goto("./new")}
       >
-        <p class="font-bold text-3xl">出品</p>
+        <p class="black">出品</p>
       </Button>
     </div>
 
@@ -82,7 +82,7 @@
                   />
                 {/if}
                 <div
-                  class="absolute text-sm top-0 left-[60px] text-[#4A4A4A]"
+                  class="absolute text-sm top-[6%] left-[60px] text-[#4A4A4A]"
                 >
                   {product.producer.name}
 
@@ -138,6 +138,7 @@
   .card-content {
     @apply bg-[#fff] absolute bottom-4 left-4;
   }
+
   .product-img {
     @apply h-auto w-full;
   }
