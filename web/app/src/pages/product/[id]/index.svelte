@@ -70,9 +70,14 @@
           </div>
         </div>
       </div>
-      <h1 class="mt-3 text-2xl font-bold text-[#5A5A5A]">
+      <div class="mt-3 flex justify-between items-center">
+        <h1 class="text-2xl font-bold text-[#5A5A5A]">
         {product.name}
       </h1>
+        {#if isOutOfStock(product)}
+          <p class="text-[#ff0000] text-xl">終了</p>
+        {/if}
+      </div>
       <img
         src={product.image ??
           "./../../../public/images/default_product_image.png"}
