@@ -35,6 +35,10 @@
       return null;
     }
   }
+
+  function isOutOfStock(product: TProduct): boolean {
+    return product.remaining <= 0;
+  }
 </script>
 
 {#await fetchProduct()}
@@ -72,8 +76,8 @@
       </div>
       <div class="mt-3 flex justify-between items-center">
         <h1 class="text-2xl font-bold text-[#5A5A5A]">
-        {product.name}
-      </h1>
+          {product.name}
+        </h1>
         {#if isOutOfStock(product)}
           <p class="text-[#ff0000] text-xl">終了</p>
         {/if}
@@ -110,17 +114,8 @@
       </div>
     </Paper>
 
-    <div class="flex justify-center grid gap-4">
-      <Button
-        color="secondary"
-        variant="raised"
-        class="w-[150px] px-4 py-2 mt-10 mr-4 rounded-full"
-        on:click={() => $goto("../../../product/")}
-        type="button"
-      >
-        <p class="black">キャンセル</p>
-      </Button>
-      {#if $profile.attribute === USER_ATTRIBUTE.consumer}
+    {#if $profile.attribute === USER_ATTRIBUTE.consumer && !isOutOfStock(product)}
+      <div class="flex justify-center">
         <Button
           variant="raised"
           class="w-[150px] px-4 py-2 mt-10 rounded-full"
@@ -129,7 +124,7 @@
         >
           <p class="black">予約</p>
         </Button>
-      {/if}
-    </div>
+      </div>
+    {/if}
   </div>
 {/await}
