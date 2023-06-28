@@ -44,7 +44,7 @@
   </div>
 {:then products}
   <div class="m-6">
-    <div class="flex justify-between"style="display: flex; justify-content: center">
+    <div class="flex justify-center">
       <Button
         color="secondary"
         variant="raised"
@@ -55,11 +55,12 @@
       </Button>
     </div>
 
-    <div class="card-display"style="width:100%">
+    <div class="container my-12 mx-auto px-4 md:px-12">
+      <div class="flex flex-wrap -mx-1 lg:-mx-4">
       {#each products as product}
-        <div class="card-container">
+        <div class="my-1 px-1 sm:flex sm:justify-center sm:w-full md:w-1/2 lg:my-4 lg:px-4 lg:w-1/3 xl:w-1/4 flex">
           <Card class="rounded-[24px]">
-            <Content class="mdc-typography--body2 relative" style="top:10px">
+            <Content class="mdc-typography--body2 relative top-[10px]">
               <div class="">
                 <!-- TODO: imageタグ内の重複コードを解消する -->
                 {#if product.producer.image}
@@ -73,7 +74,7 @@
                     class="absolute top-0 w-[30px] h-[30px] rounded-[50%]"
                     src="./../../../../public/images/house.png"
                     alt=""
-                  />    
+                  />
                 {:else}
                   <img
                     class="absolute top-0 w-[30px] h-[30px] rounded-[50%]"
@@ -92,34 +93,29 @@
                 </div>
               </div>
             </Content>
-            <PrimaryAction on:click={$goto(`./${product.id}`)}>
+            <PrimaryAction on:click={$goto(`./${product.id}`)} class="h-full">
               <div>
                 <img
-                  class="product-img"
+                  class="block h-48 w-96 object-contain"
                   src={product.image ??
                     "https://girlydrop.com/wp-content/uploads/post/p5774.jpg"}
                   alt=""
                 />
-                <MediaContent>
-                  <div class="card-content" />
-                </MediaContent>
               </div>
               <Content class="mdc-typography--body2 relative">
-                <div class="price-block">
+                <div class="flex justify-center">
                   <div class="text-lg text-[#4A4A4A] mt-1">
                     {product.unitQuantity}{CROP_UNITS_LABEL[product.unit]}
                   </div>
-                  <div>&nbsp;&nbsp;&nbsp;</div>
-                  <div class="text-2xl text-[#4A4A4A]">
-                    {product.unitPrice}
+                  <div class="text-2xl text-[#4A4A4A] ml-5">
+                    {product.unitPrice} 円
                   </div>
-                  <div class="text-[#4A4A4A] mt-1.5">円</div>
                 </div>
-                <div class="text-lg text-[#4A4A4A] mt-1" style="float:left">
+                <div class="text-lg text-[#4A4A4A] mt-1 flex justify-center" >
                   予約期間：
-                <div style="float:right">{dayjs(product.startAt).format("MM/DD")}</div>
-                <div style="float:right">〜</div>
-                <div style="float:right">{dayjs(product.endAt).format("MM/DD")}</div>
+                <div >{dayjs(product.startAt).format("MM/DD")}</div>
+                <div >〜</div>
+                <div >{dayjs(product.endAt).format("MM/DD")}</div>
                 </div>
               </Content>
             </PrimaryAction>
@@ -127,23 +123,6 @@
         </div>
       {/each}
     </div>
+    </div>
   </div>
 {/await}
-
-<style lang="postcss">
-  .card-display {
-    @apply grid grid-cols-2 gap-16 mt-8 px-8;
-  }
-
-  .card-content {
-    @apply bg-[#fff] absolute bottom-4 left-4;
-  }
-
-  .product-img {
-    @apply h-auto w-full;
-  }
-
-  .price-block {
-    @apply flex relative left-[40%];
-  }
-</style>
