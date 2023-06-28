@@ -49,7 +49,6 @@
         color="secondary"
         variant="raised"
         class="w-[150px] px-4 py-2 mt-10 rounded-full"
-        on:click={() => $goto("./new")}
       >
         <p class="black">出品</p>
       </Button>
@@ -58,8 +57,8 @@
     <div class="container my-12 mx-auto px-4 md:px-12">
       <div class="flex flex-wrap -mx-1 lg:-mx-4">
       {#each products as product}
-        <div class="my-1 px-1 sm:flex sm:justify-center sm:w-full md:w-1/2 lg:my-4 lg:px-4 lg:w-1/3 xl:w-1/4 flex">
-          <Card class="rounded-[24px]">
+        <div class="my-1 px-1 sm:flex sm:justify-center sm:w-full md:w-1/2 lg:my-4 lg:px-4 lg:w-1/3 xl:w-1/4 flex width=270px max-width=100%">
+          <Card class="rounded-[24px] width=270px max-width=100% "on:click={$goto(`./${product.id}`)} >
             <Content class="mdc-typography--body2 relative top-[10px]">
               <div class="">
                 <!-- TODO: imageタグ内の重複コードを解消する -->
@@ -88,7 +87,7 @@
                   {product.producer.name}
 
                 </div>
-                <div class="text-xl font-bold mt-4">
+                <div class="text-xl font-bold mt-4"style="text-overflow: ellipsis max-width=100%">
                   {product.name}
                 </div>
               </div>
