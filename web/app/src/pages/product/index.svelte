@@ -39,8 +39,8 @@
 </script>
 
 {#await fetchProducts()}
-  <div style="display: flex; justify-content: center">
-    <CircularProgress style="height: 160px; width: 32px;" indeterminate />
+  <div class="flex justify-center">
+    <CircularProgress class="h-40 w-8" indeterminate />
   </div>
 {:then products}
   <div class="m-6">
@@ -55,16 +55,16 @@
       </Button>
     </div>
 
-    <div class="container my-12 mx-auto px-4 md:px-12">
+    <div class="container my-12 mx-auto md:px-12">
       <div class="flex flex-wrap -mx-1 lg:-mx-4">
         {#each products as product}
           <div
-            class="my-1 px-1 sm:flex sm:justify-center sm:w-full md:w-1/2 lg:my-4 lg:px-4 lg:w-1/3 xl:w-1/4 flex"
+            class="my-1 px-1 sm:justify-center md:w-full md:w-1/2 lg:my-4 lg:px-4 lg:w-1/3 xl:w-1/4 flex"
           >
             <Card class="rounded-[24px]">
               <PrimaryAction on:click={$goto(`./${product.id}`)} class="h-full">
                 <Content class="mdc-typography--body2 relative top-[10px]">
-                  <div class="max-w-[100%]">
+                  <div>
                     <!-- TODO: imageタグ内の重複コードを解消する -->
                     {#if product.producer.image}
                       <img
@@ -127,3 +127,4 @@
     </div>
   </div>
 {/await}
+
