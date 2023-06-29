@@ -91,11 +91,10 @@
       />
     </div>
 
-    <Paper class="mt-3 w-[300px]" color="secondary" variant="outlined">
-      <p>
-        {product.description}
-      </p>
-    </Paper>
+    <fieldset class="p-3 w-[300px] border border-secondary rounded">
+      <legend>説明</legend>
+      {product.description}
+    </fieldset>
 
     <Paper class="mt-3 w-[300px]" color="secondary" variant="outlined">
       <div class="text-center text-base text-[#5A5A5A] mt-2">
