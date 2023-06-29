@@ -90,10 +90,7 @@
                     >
                       {product.producer.name}
                     </div>
-                    <div
-                      class="text-xl font-bold mt-4"
-                      style="text-overflow: ellipsis max-width=100%"
-                    >
+                    <div class="text-xl font-bold mt-4 truncate w-[260px]">
                       {product.name}
                     </div>
                   </div>
